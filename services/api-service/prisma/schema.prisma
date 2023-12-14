@@ -22,7 +22,7 @@ model Account {
 
 model AccountVerifyEmail {
   id        Int     @id @default(autoincrement())
-  code      String
+  code      String  @unique
   verified  Boolean @default(false)
   account   Account @relation(fields: [accountId], references: [id])
   accountId Int

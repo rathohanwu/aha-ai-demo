@@ -1,15 +1,8 @@
-import {google} from "googleapis";
-import {authenticate} from '@google-cloud/local-auth';
-
-
 import {EmailParams, MailerSend, Recipient, Sender} from "mailersend";
-import * as path from "path";
-
 
 const mailerSend = new MailerSend({
     apiKey: "mlsn.f3186306bcb38fd28dfb4a4b65306ed0281b370934a4a8d2f77ca71d701035b5"
 });
-
 
 export function sendEmail(to: string, name: string, verifyEmailLink: string) {
 

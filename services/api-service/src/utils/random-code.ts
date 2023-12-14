@@ -1,4 +1,4 @@
-export function getRandomCode(length = 26) {
+export function getRandomCode(length = 100) {
     let result = '';
     const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
     const charactersLength = characters.length;
