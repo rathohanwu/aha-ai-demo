@@ -1,5 +1,4 @@
 import {useSearchParams} from "next/navigation"
-import {useGoogleAuth} from "@/hooks/auth/useGoogleAuth";
 import React, {useEffect, useState} from "react";
 import {CircularProgress} from "@mui/material";
 import {api} from "@/lib/api";

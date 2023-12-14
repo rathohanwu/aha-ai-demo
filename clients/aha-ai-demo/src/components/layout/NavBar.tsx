@@ -3,7 +3,7 @@ import {useState} from "react";
 import {TransitionsModal} from "../TransitionsModal";
 import Typography from "@mui/material/Typography";
 import {GoogleAuthButton} from "@/components/auth/GoogleAuthButton";
-import {SignInForm} from "@/components/auth/SignInForm";
+import {SignUpForm} from "@/components/auth/SignUpForm";
 
 function NavBar() {
 
@@ -26,7 +26,7 @@ function NavBar() {
                 isOpen={open}
                 close={() => setOpen(false)}
             >
-                <SignInForm/>
+                <SignUpForm/>
             </TransitionsModal>
 
         </>
