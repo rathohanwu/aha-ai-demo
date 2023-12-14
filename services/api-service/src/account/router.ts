@@ -2,7 +2,7 @@ import {Router} from "src/utils/http";
 import {Body, Get, Post, UsePipes} from "@nestjs/common";
 import {ValidationPipe} from "../utils/validation";
 import {signInGoogleDto, signInGoogleSchema} from "./schema";
-
+import * as controller from "./controller";
 
 @Router("account")
 export class AccountRouter {
@@ -12,10 +12,9 @@ export class AccountRouter {
         return "This action returns all cats"
     }
 
-    @Post("sign_in/google")
+    @Post("sign_in_or_up/google")
     @UsePipes(ValidationPipe(signInGoogleSchema))
-    signIn(@Body() signIn: signInGoogleDto) {
-        console.log("this is hte code ", signIn.code)
-        return "thanks for sign in"
+    signInOrUpByGoogle(@Body() signIn: signInGoogleDto) {
+        return controller.signInOrUpByGoogle(signIn.code);
     }
 }

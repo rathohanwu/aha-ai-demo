@@ -1,15 +1,20 @@
 import md5 from "md5";
-import {type SignUpMethod} from "@prisma/client";
 import {prisma} from "../lib/db";
 
-export async function createAccount(name: string, email: string, password: string, method: SignUpMethod) {
-
+export function createAccount(name: string, email: string, password?: string) {
     return prisma.account.create({
         data: {
             name: name,
-            password: md5(password) as string,
-            email: email,
-            signUpMethod: method
+            password: password ? md5(password) as string : null,
+            email: email
+        }
+    })
+}
+
+export function findAccountByEmail(email: string) {
+    return prisma.account.findUnique({
+        where: {
+            email: email
         }
     })
 }

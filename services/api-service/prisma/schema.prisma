@@ -16,14 +16,8 @@ model Account {
   name         String
   password     String?
   signUpTime   DateTime             @default(now())
-  signUpMethod SignUpMethod
   verifyEmails AccountVerifyEmail[]
   logins       AccountLogin[]
-}
-
-enum SignUpMethod {
-  GOOGLE
-  USERPASSWORD
 }
 
 model AccountVerifyEmail {

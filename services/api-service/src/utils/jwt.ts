@@ -2,7 +2,8 @@ import * as jwt from "jsonwebtoken";
 
 type Account = {
     name: string,
-    email: string
+    email: string,
+    signMethod: "GOOGLE" | "PASSWORD"
 }
 
 type JwtToken = Account & { exp: number }
@@ -13,6 +14,6 @@ export function signJwt(account: Account) {
     return jwt.sign({...account, exp: Math.floor(Date.now() / 1000) + (60 * 60)}, JWT_SECRET_KEY)
 }
 
-export function verifyJwt(jwtToken: string){
-    return  jwt.verify(jwtToken, JWT_SECRET_KEY) as JwtToken
+export function verifyJwt(jwtToken: string) {
+    return jwt.verify(jwtToken, JWT_SECRET_KEY) as JwtToken
 }
