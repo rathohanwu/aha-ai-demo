@@ -1,11 +1,37 @@
-import md5 from "md5";
+import * as md5 from "md5";
 import {prisma} from "../lib/db";
+import {getRandomCode} from "../utils/random-code";
 
-export function createAccount(name: string, email: string, password?: string) {
+export async function createAccountWithVerifyEmail(name: string, email: string, password: string) {
+
+    return prisma.$transaction(async (tx) => {
+
+        const account = await tx.account.create({
+            data: {
+                name: name,
+                password: password ? md5(password) as string : null,
+                email: email
+            }
+        })
+
+        const verifyEmail = await tx.accountVerifyEmail.create({
+            data: {
+                code: getRandomCode(),
+                accountId: account.id
+            }
+        })
+
+        return verifyEmail;
+    })
+
+
+}
+
+
+export function createAccount(name: string, email: string) {
     return prisma.account.create({
         data: {
             name: name,
-            password: password ? md5(password) as string : null,
             email: email
         }
     })

@@ -1,6 +1,11 @@
 import * as service from "./service";
+import {signUpUserPasswordDto} from "./schema";
 
-
-export function signInOrUpByGoogle(code: string) {
-    return service.signInOrUpByGoogle(code);
+export function signGoogle(code: string) {
+    return service.signGoogle(code);
 }
+
+export function signUp(signUp: signUpUserPasswordDto) {
+    return service.signUp(signUp);
+}
+
