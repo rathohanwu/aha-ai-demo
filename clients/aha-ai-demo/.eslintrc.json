@@ -1,6 +1,0 @@
-{
-  "extends": [
-    "google",
-    "next/core-web-vitals"
-  ]
-}

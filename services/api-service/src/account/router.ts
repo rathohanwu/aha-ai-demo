@@ -1,5 +1,5 @@
 import {Router} from "src/utils/http";
-import {Body, Get, Post, Query, UsePipes} from "@nestjs/common";
+import {Body, Get, Post, Query, Res, UsePipes} from "@nestjs/common";
 import {ValidationPipe} from "../utils/validation";
 import {
     signInGoogleDto,
@@ -9,6 +9,7 @@ import {
     verifyEmailCodeDto, verifyEmailCodeSchema
 } from "./schema";
 import * as controller from "./controller";
+import {Response} from "express";
 
 @Router("account")
 export class AccountRouter {
@@ -27,8 +28,9 @@ export class AccountRouter {
 
     @Post("signup")
     @UsePipes(ValidationPipe(signUpUserPasswordSchema))
-    signUp(@Body() signUp: signUpUserPasswordDto) {
-        return controller.signUp(signUp);
+    async signUp(@Body() signUp: signUpUserPasswordDto, @Res() response: Response) {
+        const jwtToken = await controller.signUp(signUp);
+        response.cookie("JWT_TOKEN", jwtToken);
     }
 
     @Post("signin")
