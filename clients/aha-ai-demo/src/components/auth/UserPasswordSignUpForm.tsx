@@ -27,7 +27,13 @@ const formSchema = yup.object({
         .max(12, "Password cannot exceed more than 12 characters")
 }).required();
 
-function UserPasswordSignUpForm() {
+type Props = {
+    close: () => void
+}
+
+function UserPasswordSignUpForm(props: Props) {
+
+    const {close} = props;
     const [showMessage, setShowMessage] = useState(false);
     const [errorMessage, setErrorMessage] = useState("");
     const router = useRouter();
@@ -37,6 +43,7 @@ function UserPasswordSignUpForm() {
     const onSubmit: SubmitHandler<Inputs> = async (data) => {
         try {
             await api.post("account/auth/signup", data);
+            close();
             router.push("/dashboard");
         } catch (err) {
             handleApiError(err);
@@ -74,7 +81,7 @@ function UserPasswordSignUpForm() {
                     <TextField fullWidth label="Password" type="password" size="small" {...register("password")}
                                error={!!errors.password} helperText={errors.password?.message}/>
                     <div style={{display: "flex", justifyContent: "right", gap: 10}}>
-                        <Button variant="outlined">Cancel</Button>
+                        <Button variant="outlined" onClick={close}>Cancel</Button>
                         <Button variant="contained" type="submit">Sign Up</Button>
                     </div>
                 </div>

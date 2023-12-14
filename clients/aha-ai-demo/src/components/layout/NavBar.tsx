@@ -1,13 +1,12 @@
-import {Box, Button, TextField} from "@mui/material";
+import {Box, Button} from "@mui/material";
 import {useState} from "react";
 import {TransitionsModal} from "../TransitionsModal";
-import Typography from "@mui/material/Typography";
-import {GoogleAuthButton} from "@/components/auth/GoogleAuthButton";
 import {SignUpForm} from "@/components/auth/SignUpForm";
 
 function NavBar() {
 
     const [open, setOpen] = useState(false);
+    const close = () => setOpen(false);
 
     return (
         <>
@@ -15,6 +14,7 @@ function NavBar() {
                 <Button variant={"contained"} onClick={() => setOpen(true)}>Sign Up</Button>
                 <Button variant={"outlined"} style={{marginLeft: "1em"}}>Sign In</Button>
             </div>
+
             <Box sx={{
                 borderBottom: 2,
                 borderColor: "grey.500",
@@ -24,9 +24,9 @@ function NavBar() {
 
             <TransitionsModal
                 isOpen={open}
-                close={() => setOpen(false)}
+                close={close}
             >
-                <SignUpForm/>
+                <SignUpForm close={close}/>
             </TransitionsModal>
 
         </>

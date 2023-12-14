@@ -3,7 +3,14 @@ import {Box} from "@mui/material";
 import {GoogleAuthButton} from "@/components/auth/GoogleAuthButton";
 import {UserPasswordSignUpForm} from "@/components/auth/UserPasswordSignUpForm";
 
-function SignUpForm() {
+
+type Props = {
+    close: () => void
+}
+
+function SignUpForm(props: Props) {
+
+    const {close} = props;
 
     return (
         <div style={{
@@ -13,7 +20,7 @@ function SignUpForm() {
             minHeight: 250
         }}>
             <Typography>Sign Up</Typography>
-            <UserPasswordSignUpForm/>
+            <UserPasswordSignUpForm close={close}/>
             <Box sx={{
                 borderBottom: 2,
                 borderColor: "grey.500",
