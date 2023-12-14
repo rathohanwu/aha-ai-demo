@@ -3,7 +3,7 @@ import {Body, Get, Post, Query, UsePipes} from "@nestjs/common";
 import {ValidationPipe} from "../utils/validation";
 import {
     signInGoogleDto,
-    signInGoogleSchema,
+    signInGoogleSchema, signInUserPasswordDto, signInUserPasswordSchema,
     signUpUserPasswordDto,
     signUpUserPasswordSchema,
     verifyEmailCodeDto, verifyEmailCodeSchema
@@ -29,6 +29,12 @@ export class AccountRouter {
     @UsePipes(ValidationPipe(signUpUserPasswordSchema))
     signUp(@Body() signUp: signUpUserPasswordDto) {
         return controller.signUp(signUp);
+    }
+
+    @Post("signin")
+    @UsePipes(ValidationPipe(signInUserPasswordSchema))
+    signIn(@Body() signIn: signInUserPasswordDto) {
+        return controller.signIn(signIn);
     }
 
 }

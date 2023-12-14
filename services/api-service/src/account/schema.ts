@@ -15,6 +15,13 @@ export const signUpUserPasswordSchema = z.object({
 
 export type signUpUserPasswordDto = z.infer<typeof signUpUserPasswordSchema>;
 
+export const signInUserPasswordSchema = z.object({
+    email: z.string(),
+    password: z.string()
+}).required()
+
+export type signInUserPasswordDto = z.infer<typeof signInUserPasswordSchema>;
+
 export const verifyEmailCodeSchema = z.object({
     code: z.string()
 }).required();

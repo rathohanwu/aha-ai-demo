@@ -1,9 +1,11 @@
 import * as repo from "./repo";
 import {getGoogleUserInfo} from "../lib/auth";
 import {signJwt} from "../utils/jwt";
-import {signUpUserPasswordDto} from "./schema";
+import {signInUserPasswordDto, signUpUserPasswordDto} from "./schema";
 import {throwHttpException} from "../utils/errors";
 import {sendEmail} from "../lib/mail";
+import {sign} from "jsonwebtoken";
+
 
 export async function verifyEmail(code: string) {
     const verifyEmail = await repo.findAccountVerifyEmailByCode(code);
@@ -45,7 +47,13 @@ export async function signUp(signUp: signUpUserPasswordDto) {
 
 }
 
-export async function userPasswordSignUp(user: string, email: string, password: string) {
-    const account = await repo.createAccountWithVerifyEmail(user, email, password);
-}
+export async function signIn(signIn: signInUserPasswordDto) {
 
+    const account = await repo.findAccountByEmailAndPassword(signIn.email, signIn.password);
+    if (!account) {
+        throwHttpException("the user name or password is wrong");
+    }
+    const {name, email} = account;
+    return signJwt({name, email, signMethod: "PASSWORD"})
+
+}
