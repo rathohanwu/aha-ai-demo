@@ -13,10 +13,17 @@ datasource db {
 model Account {
   id           Int                  @id @default(autoincrement())
   email        String               @unique
-  name         String?
-  signUpTime   DateTime
+  name         String
+  password     String?
+  signUpTime   DateTime             @default(now())
+  signUpMethod SignUpMethod
   verifyEmails AccountVerifyEmail[]
   logins       AccountLogin[]
+}
+
+enum SignUpMethod {
+  GOOGLE
+  USERPASSWORD
 }
 
 model AccountVerifyEmail {
