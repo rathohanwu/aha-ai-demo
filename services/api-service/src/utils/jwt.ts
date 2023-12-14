@@ -2,13 +2,15 @@ import * as jwt from "jsonwebtoken";
 import {createParamDecorator, ExecutionContext} from "@nestjs/common";
 import {throwHttpException} from "./errors";
 
+export type signMethod = "GOOGLE" | "PASSWORD";
+
 type Account = {
     name: string,
     email: string,
-    signMethod: "GOOGLE" | "PASSWORD"
+    signMethod: signMethod
 }
 
-type JwtToken = Account & { exp: number }
+export type JwtToken = Account & { exp: number }
 
 const JWT_SECRET_KEY = "SECRET";
 export const JWT_TOKEN_NAME = "JWT_TOKEN";
@@ -28,7 +30,7 @@ export function verifyJwt(jwtToken: string) {
 }
 
 
-export const JwtToken = createParamDecorator(
+export const UseJwtToken = createParamDecorator(
     (data: string, ctx: ExecutionContext) => {
         const request = ctx.switchToHttp().getRequest()
         const jwtToken = request.cookies?.[JWT_TOKEN_NAME];

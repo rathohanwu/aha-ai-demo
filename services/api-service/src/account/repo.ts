@@ -2,6 +2,15 @@ import * as md5 from "md5";
 import {prisma} from "../lib/db";
 import {getRandomCode} from "../utils/random-code";
 
+export async function findAccountVerifyEmailByAccountId(accountId: number) {
+    return prisma.accountVerifyEmail.findFirst({
+        where: {
+            accountId: accountId,
+            verified: true
+        }
+    })
+}
+
 
 export function updateAccountVerifyEmailStatus(id: number, verified: boolean) {
     return prisma.accountVerifyEmail.update({

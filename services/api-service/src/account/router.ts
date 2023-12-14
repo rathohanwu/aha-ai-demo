@@ -10,15 +10,15 @@ import {
 } from "./schema";
 import * as controller from "./controller";
 import {Response} from "express";
-import {throwHttpException} from "../utils/errors";
-import {JWT_TOKEN_NAME} from "../utils/jwt";
+
+import {JWT_TOKEN_NAME, JwtToken, UseJwtToken} from "../utils/jwt";
 
 @Router("account")
 export class AccountRouter {
 
-    @Get("test")
-    test() {
-        throwHttpException("testin 123");
+    @Get()
+    me(@UseJwtToken() jwtToken: JwtToken) {
+        return controller.findAccountAndVerifiedStatus(jwtToken.email, jwtToken.signMethod);
     }
 
     @Get("auth/verify")

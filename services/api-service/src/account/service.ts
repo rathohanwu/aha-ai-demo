@@ -1,11 +1,30 @@
 import * as repo from "./repo";
 import {getGoogleUserInfo} from "../lib/auth";
-import {signJwt} from "../utils/jwt";
+import {signJwt, signMethod} from "../utils/jwt";
 import {signInUserPasswordDto, signUpUserPasswordDto} from "./schema";
 import {throwHttpException} from "../utils/errors";
 import {sendEmail} from "../lib/mail";
-import {sign} from "jsonwebtoken";
 
+export async function findAccountAndVerifiedStatus(email: string, signMethod: signMethod): Promise<{
+    name: string,
+    signUpTime: Date,
+    verified: boolean
+}> {
+    const account = await repo.findAccountByEmail(email);
+    if (signMethod == "GOOGLE") {
+        return {
+            name: account.name,
+            signUpTime: account.signUpTime,
+            verified: true
+        }
+    }
+    const verifyEmail = await repo.findAccountVerifyEmailByAccountId(account.id)
+    return {
+        name: account.name,
+        signUpTime: account.signUpTime,
+        verified: !!verifyEmail
+    }
+}
 
 export async function verifyEmail(code: string) {
     const verifyEmail = await repo.findAccountVerifyEmailByCode(code);
