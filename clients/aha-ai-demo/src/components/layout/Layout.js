@@ -4,7 +4,7 @@ import {NavBar} from "./NavBar";
 function Layout({children}) {
     return (
         <>
-            <div style={{backgroundColor: "lightgray"}}>
+            <div >
                 <NavBar/>
                 <main>{children}</main>
             </div>

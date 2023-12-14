@@ -10,33 +10,49 @@ import {
 } from "./schema";
 import * as controller from "./controller";
 import {Response} from "express";
+import {throwHttpException} from "../utils/errors";
+import {JWT_TOKEN_NAME} from "../utils/jwt";
 
 @Router("account")
 export class AccountRouter {
 
-    @Get("verify")
+    @Get("test")
+    test() {
+        throwHttpException("testin 123");
+    }
+
+    @Get("auth/verify")
     @UsePipes(ValidationPipe(verifyEmailCodeSchema))
     verifyEmail(@Query() verifyEmail: verifyEmailCodeDto) {
         return controller.verifyEmail(verifyEmail.code);
     }
 
-    @Post("google")
+    @Post("auth/google")
     @UsePipes(ValidationPipe(signInGoogleSchema))
-    signByGoogle(@Body() signIn: signInGoogleDto) {
-        return controller.signGoogle(signIn.code);
+    async signByGoogle(@Body() signIn: signInGoogleDto, @Res({passthrough: true}) response: Response) {
+        const jwtToken = await controller.signGoogle(signIn.code);
+        this.setJwtCookie(response, jwtToken);
     }
 
-    @Post("signup")
+    @Post("auth/signup")
     @UsePipes(ValidationPipe(signUpUserPasswordSchema))
-    async signUp(@Body() signUp: signUpUserPasswordDto, @Res() response: Response) {
+    async signUp(@Body() signUp: signUpUserPasswordDto, @Res({passthrough: true}) response: Response) {
         const jwtToken = await controller.signUp(signUp);
-        response.cookie("JWT_TOKEN", jwtToken);
+        this.setJwtCookie(response, jwtToken);
     }
 
-    @Post("signin")
+    @Post("auth/signin")
     @UsePipes(ValidationPipe(signInUserPasswordSchema))
-    signIn(@Body() signIn: signInUserPasswordDto) {
-        return controller.signIn(signIn);
+    async signIn(@Body() signIn: signInUserPasswordDto, @Res({passthrough: true}) response: Response) {
+        const jwtToken = await controller.signIn(signIn);
+        this.setJwtCookie(response, jwtToken);
+    }
+
+    private setJwtCookie(response: Response, jwtToken: string) {
+        return response.cookie(JWT_TOKEN_NAME, jwtToken, {
+            httpOnly: true,
+            sameSite: 'lax',
+        });
     }
 
 }

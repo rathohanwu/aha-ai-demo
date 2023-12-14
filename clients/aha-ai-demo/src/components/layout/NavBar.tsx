@@ -1,7 +1,9 @@
-import {Box, Button} from "@mui/material";
+import {Box, Button, TextField} from "@mui/material";
 import {useState} from "react";
-import {TransitionsModal} from "./TransitionsModal";
+import {TransitionsModal} from "../TransitionsModal";
 import Typography from "@mui/material/Typography";
+import {GoogleAuthButton} from "@/components/auth/GoogleAuthButton";
+import {SignInForm} from "@/components/auth/SignInForm";
 
 function NavBar() {
 
@@ -24,13 +26,7 @@ function NavBar() {
                 isOpen={open}
                 close={() => setOpen(false)}
             >
-                <Typography id="transition-modal-title" variant="h6" component="h2">
-                    Text in a modal
-                </Typography>
-                <Typography id="transition-modal-description" sx={{mt: 2}}>
-                    Duis mollis, est non commodo luctus, nisi erat porttitor ligula.
-                </Typography>
-                testing
+                <SignInForm/>
             </TransitionsModal>
 
         </>

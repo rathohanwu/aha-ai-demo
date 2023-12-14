@@ -25,7 +25,7 @@ export async function verifyEmail(code: string) {
 export async function signGoogle(code: string) {
     const userInfo = await getGoogleUserInfo(code);
     const existingAccount = await repo.findAccountByEmail(userInfo.email);
-    if (!!existingAccount) {
+    if (existingAccount) {
         const {name, email} = existingAccount;
         return signJwt({name, email, signMethod: "GOOGLE"})
     }

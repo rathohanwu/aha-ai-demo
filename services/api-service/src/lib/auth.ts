@@ -25,6 +25,7 @@ export async function getGoogleUserInfo(code: string) {
         };
 
     } catch (e) {
+        console.error("google auth error", e);
         throwHttpException("the code can't be validated by google");
     }
 

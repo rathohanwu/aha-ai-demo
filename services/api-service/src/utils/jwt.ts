@@ -11,7 +11,7 @@ type Account = {
 type JwtToken = Account & { exp: number }
 
 const JWT_SECRET_KEY = "SECRET";
-const JWT_TOKEN = "JWT_TOKEN";
+export const JWT_TOKEN_NAME = "JWT_TOKEN";
 
 export function signJwt(account: Account) {
     return jwt.sign({...account, exp: Math.floor(Date.now() / 1000) + (60 * 60)}, JWT_SECRET_KEY)
@@ -31,7 +31,7 @@ export function verifyJwt(jwtToken: string) {
 export const JwtToken = createParamDecorator(
     (data: string, ctx: ExecutionContext) => {
         const request = ctx.switchToHttp().getRequest()
-        const jwtToken = request.cookies?.[JWT_TOKEN];
+        const jwtToken = request.cookies?.[JWT_TOKEN_NAME];
         if (!jwtToken) {
             throwHttpException("authentication is not found")
         }

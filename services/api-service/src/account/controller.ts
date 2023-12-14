@@ -4,8 +4,6 @@ import {signInUserPasswordDto, signUpUserPasswordDto} from "./schema";
 export function signIn(signIn: signInUserPasswordDto) {
     return service.signIn(signIn);
 }
-
-
 export function verifyEmail(code: string) {
     return service.verifyEmail(code);
 }
