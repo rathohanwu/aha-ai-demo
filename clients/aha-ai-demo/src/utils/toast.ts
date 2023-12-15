@@ -8,4 +8,12 @@ const showSuccessfulMessage = (message: string) => {
     toast.success(message, {duration: 2000})
 };
 
-export {showErrorMessage, showSuccessfulMessage}
+const showLoadingMessage = (message: string) => {
+    toast.loading(message);
+}
+
+const dismissMessage = () => {
+    toast.dismiss();
+}
+
+export {showErrorMessage, showSuccessfulMessage, showLoadingMessage, dismissMessage}
