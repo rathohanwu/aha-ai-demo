@@ -4,12 +4,13 @@ import {Account} from "@/types/account";
 
 function useAccount() {
     const url = "account"
-    const fetcher = () => api.get<Partial<Account>>(url).then(res => res.data);
-    const {data, error, isLoading} = useSWR(url, fetcher);
+    const fetcher = () => api.get<Account>(url).then(res => res.data);
+    const {data, error, isLoading, mutate} = useSWR(url, fetcher);
     return {
         account: data,
         error,
-        isLoading
+        isLoading,
+        mutate
     }
 }
 

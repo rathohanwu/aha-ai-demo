@@ -1,6 +1,18 @@
 import * as md5 from "md5";
 import {prisma} from "../lib/db";
 
+export function updateAccountNameByEmail(email: string, name: string) {
+    return prisma.account.update({
+        data: {
+            name: name
+        },
+        where: {
+            email: email
+        }
+    })
+}
+
+
 export async function findAccountByEmailAndPassword(email: string, password: string) {
     return prisma.account.findUnique({
         where: {

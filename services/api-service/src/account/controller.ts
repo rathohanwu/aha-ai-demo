@@ -19,3 +19,6 @@ export function findAccountAndVerifiedStatus(email: string, signMethod: SignMeth
     return service.findAccountAndVerifiedStatus(email, signMethod)
 }
 
+export function updateAccountNameByEmail(email: string, name: string) {
+    return service.updateAccountNameByEmail(email, name);
+}

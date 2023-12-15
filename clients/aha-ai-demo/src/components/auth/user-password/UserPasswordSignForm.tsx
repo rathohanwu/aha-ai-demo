@@ -1,4 +1,4 @@
-import {Alert, Button, CircularProgress, Snackbar, TextField} from "@mui/material";
+import {Button, TextField} from "@mui/material";
 import {useForm, SubmitHandler} from "react-hook-form";
 import * as yup from "yup";
 import {yupResolver} from '@hookform/resolvers/yup';
@@ -6,6 +6,9 @@ import {api} from "@/lib/api";
 import {useState} from "react";
 import {useRouter} from "next/router";
 import {useLoginStore} from "@/stores/loginStore";
+import {CircularProgress} from "@/components/feedback/CircularProgress";
+import {showErrorMessage} from "@/utils/toast";
+
 
 type Inputs = {
     email: string,
@@ -22,8 +25,6 @@ function UserPasswordSignForm(props: Props) {
 
     const {closeForm, mode} = props;
     const [isLoading, setIsLoading] = useState(false);
-    const [showMessage, setShowMessage] = useState(false);
-    const [errorMessage, setErrorMessage] = useState("");
     const refreshLoginStatus = useLoginStore((state) => state.refresh);
     const router = useRouter();
     const formSchema = mode == "signIn" ? signInSchema : signUpSchema;
@@ -34,54 +35,26 @@ function UserPasswordSignForm(props: Props) {
             setIsLoading(true);
             const url = mode == "signIn" ? "/auth/signin" : "/auth/signup";
             await api.post(url, data);
-            refreshLoginStatus()
-            closeForm();
-            await router.push("/dashboard");
+            setTimeout(async () => {
+                setIsLoading(false);
+                refreshLoginStatus();
+                closeForm();
+                await router.push("/dashboard");
+            }, 2000)
         } catch (err) {
-            handleApiError(err);
-        } finally {
+            showErrorMessage(err);
             setIsLoading(false)
         }
     };
 
-    const handleApiError = (err: any) => {
-        if (err?.response?.data?.statusCode == 430) {
-            setErrorMessage(err?.response?.data?.message);
-            setShowMessage(true);
-        }
-    };
-
-    const handleClose = () => setShowMessage(false);
 
     return (
         <div>
-            <Snackbar
-                style={{width: 500}}
-                open={showMessage}
-                autoHideDuration={2000}
-                onClose={handleClose}
-                anchorOrigin={{vertical: "top", horizontal: "center"}}
-            >
-                <Alert onClose={handleClose} severity="error" sx={{width: '100%'}}>
-                    {errorMessage}
-                </Alert>
-            </Snackbar>
+
 
             <form onSubmit={handleSubmit(onSubmit)}>
 
-                {
-                    isLoading &&
-                    <div style={{
-                        position: "absolute",
-                        top: "50%",
-                        left: "50%",
-                        transform: "translate(-50%, -50%)",
-                        zIndex: 100
-                    }}>
-                        <CircularProgress/>
-                    </div>
-
-                }
+                {isLoading && <CircularProgress/>}
 
                 <div style={{display: "flex", flexDirection: "column", gap: "12px"}}>
                     <TextField fullWidth label="Email" type="email" size="small" {...register("email")}

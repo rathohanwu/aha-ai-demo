@@ -3,6 +3,9 @@ import * as authController from "../auth/controller";
 import {throwHttpException} from "../utils/errors";
 import {SignMethod} from "../utils/jwt";
 
+export function updateAccountNameByEmail(email: string, name: string) {
+    return repo.updateAccountNameByEmail(email, name);
+}
 
 export function findAccountByEmailAndPassword(email: string, password: string) {
     return repo.findAccountByEmailAndPassword(email, password);
@@ -19,6 +22,7 @@ export function findAccountByEmail(email: string) {
 
 export async function findAccountAndVerifiedStatus(email: string, signMethod: SignMethod): Promise<{
     name: string,
+    email: string,
     signUpTime: Date,
     verified: boolean
 }> {
@@ -28,12 +32,13 @@ export async function findAccountAndVerifiedStatus(email: string, signMethod: Si
         throwHttpException("Account is not found")
     }
 
-    const {name, signUpTime, id: accountId} = account;
+    const {name, signUpTime, id: accountId, email: accountEmail} = account;
     const isGoogle = signMethod == "GOOGLE";
     const verifyEmail = await authController.findAccountVerifyEmailByAccountId(accountId);
 
     return {
         name,
+        email: accountEmail,
         signUpTime,
         verified: isGoogle || !!verifyEmail
     }

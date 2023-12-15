@@ -1,8 +1,10 @@
 import {Box, Button} from "@mui/material";
-import {useEffect, useState} from "react";
+import {useEffect} from "react";
 import {TransitionsModal} from "../modal/TransitionsModal";
 import {useLoginStore} from "@/stores/loginStore";
 import {SignForm} from "@/components/auth/SignForm";
+import {Drawer} from "@/components/layout/Drawer";
+import {useModal} from "@/hooks/modal/useModal";
 
 function NavBar() {
 
@@ -19,9 +21,11 @@ function NavBar() {
     return (
         <>
             <div style={{display: "flex", justifyContent: "flex-end", padding: "1em", gap: 10}}>
+
                 {!isLogin && <Button variant={"contained"} onClick={signUpModal.open}>Sign Up</Button>}
                 {!isLogin && <Button variant={"outlined"} onClick={signInModal.open}>Sign In</Button>}
                 {isLogin && <Button variant={"outlined"} onClick={logout}>Log Out</Button>}
+                {isLogin && <Drawer/>}
 
             </div>
 
@@ -29,9 +33,7 @@ function NavBar() {
                 borderBottom: 2,
                 borderColor: "grey.500",
                 boxShadow: 1
-            }}>
-            </Box>
-
+            }}/>
 
             <TransitionsModal
                 isOpen={signUpModal.isOpen}
@@ -49,15 +51,6 @@ function NavBar() {
 
         </>
     )
-}
-
-
-function useModal() {
-    const [isOpen, setIsOpen] = useState(false);
-    const open = () => setIsOpen(true);
-    const close = () => setIsOpen(false);
-
-    return {isOpen, open, close};
 }
 
 export {NavBar};

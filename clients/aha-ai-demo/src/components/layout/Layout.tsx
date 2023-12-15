@@ -1,4 +1,5 @@
 import React from "react";
+import {Toaster} from "react-hot-toast";
 import {NavBar} from "./NavBar";
 
 function Layout({children}: { children: any }) {
@@ -6,7 +7,8 @@ function Layout({children}: { children: any }) {
         <>
             <div>
                 <NavBar/>
-                <main>{children}</main>
+                <main style={{padding: "1em"}}>{children}</main>
+                <Toaster/>
             </div>
         </>
     )

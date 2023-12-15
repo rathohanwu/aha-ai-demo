@@ -1,4 +1,5 @@
-import {useAccount} from "@/hooks/dashboard/useAccount";
+import {useAccount} from "@/hooks/account/useAccount";
+
 
 function Dashboard() {
 
