@@ -1,15 +1,17 @@
 import Typography from "@mui/material/Typography";
 import {Box} from "@mui/material";
 import {GoogleAuthButton} from "@/components/auth/google/GoogleAuthButton";
-import {UserPasswordSignUpForm} from "@/components/auth/user-password/UserPasswordSignUpForm";
+import {UserPasswordSignForm} from "./user-password/UserPasswordSignForm";
+
 
 type Props = {
-    closeForm: () => void
+    closeForm: () => void,
+    mode: "signIn" | 'signUp'
 }
 
-function SignUpForm(props: Props) {
+function SignForm(props: Props) {
 
-    const {closeForm} = props;
+    const {closeForm, mode} = props;
 
     return (
         <div style={{
@@ -18,8 +20,8 @@ function SignUpForm(props: Props) {
             gap: "12px",
             minHeight: 250
         }}>
-            <Typography>Sign Up</Typography>
-            <UserPasswordSignUpForm closeForm={closeForm}/>
+            <Typography>{mode == "signIn" ? "Sign In" : "Sign Up"}</Typography>
+            <UserPasswordSignForm mode={mode} closeForm={closeForm}/>
             <Box sx={{
                 borderBottom: 2,
                 borderColor: "grey.500",
@@ -32,4 +34,4 @@ function SignUpForm(props: Props) {
 
 }
 
-export {SignUpForm};
+export {SignForm};

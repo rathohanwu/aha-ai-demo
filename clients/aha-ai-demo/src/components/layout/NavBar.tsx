@@ -1,9 +1,8 @@
 import {Box, Button} from "@mui/material";
 import {useEffect, useState} from "react";
 import {TransitionsModal} from "../modal/TransitionsModal";
-import {SignUpForm} from "@/components/auth/SignUpForm";
-import {SignInForm} from "@/components/auth/SignInForm";
 import {useLoginStore} from "@/stores/loginStore";
+import {SignForm} from "@/components/auth/SignForm";
 
 function NavBar() {
 
@@ -38,14 +37,14 @@ function NavBar() {
                 isOpen={signUpModal.isOpen}
                 close={signUpModal.close}
             >
-                <SignUpForm closeForm={signUpModal.close}/>
+                <SignForm closeForm={signUpModal.close} mode={"signUp"}/>
             </TransitionsModal>
 
             <TransitionsModal
                 isOpen={signInModal.isOpen}
                 close={signInModal.close}
             >
-                <SignInForm closeForm={signInModal.close}/>
+                <SignForm closeForm={signInModal.close} mode={"signIn"}/>
             </TransitionsModal>
 
         </>

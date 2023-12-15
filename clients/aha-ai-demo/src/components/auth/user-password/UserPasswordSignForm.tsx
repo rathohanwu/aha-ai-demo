@@ -7,44 +7,31 @@ import {useState} from "react";
 import {useRouter} from "next/router";
 import {useLoginStore} from "@/stores/loginStore";
 
-// Types
 type Inputs = {
     email: string,
-    name: string,
-    password: string
+    password: string,
+    name?: string,
 };
 
-// Validation Schema
-const formSchema = yup.object({
-    email: yup.string().required("Email is required").email(),
-    name: yup.string().required("Name is required"),
-    password: yup.string()
-        .required("Password is required")
-        .matches(/[a-z]/, 'Password must contain at least one lowercase letter')
-        .matches(/[A-Z]/, 'Password must contain at least one uppercase letter')
-        .matches(/[0-9]/, 'Password must contain at least one number')
-        .matches(/[@$!%*?&#]/, 'Password must contain at least one special character')
-        .min(8, "Password should be at least 8 characters")
-        .max(12, "Password cannot exceed more than 12 characters")
-}).required();
-
 type Props = {
-    closeForm: () => void
+    closeForm: () => void,
+    mode: "signIn" | 'signUp'
 }
 
-function UserPasswordSignUpForm(props: Props) {
+function UserPasswordSignForm(props: Props) {
 
-    const {closeForm} = props;
+    const {closeForm, mode} = props;
     const [showMessage, setShowMessage] = useState(false);
     const [errorMessage, setErrorMessage] = useState("");
     const refreshLoginStatus = useLoginStore((state) => state.refresh);
     const router = useRouter();
-
+    const formSchema = mode == "signIn" ? signInSchema : signUpSchema;
     const {register, handleSubmit, formState: {errors}} = useForm<Inputs>({resolver: yupResolver(formSchema)});
 
     const onSubmit: SubmitHandler<Inputs> = async (data) => {
         try {
-            await api.post("/auth/signup", data);
+            const url = mode == "signIn" ? "/auth/signin" : "/auth/signup";
+            await api.post(url, data);
             refreshLoginStatus()
             closeForm();
             await router.push("/dashboard");
@@ -79,8 +66,12 @@ function UserPasswordSignUpForm(props: Props) {
                 <div style={{display: "flex", flexDirection: "column", gap: "12px"}}>
                     <TextField fullWidth label="Email" type="email" size="small" {...register("email")}
                                error={!!errors.email} helperText={errors.email?.message}/>
-                    <TextField fullWidth label="Name" size="small" {...register("name")} error={!!errors.name}
-                               helperText={errors.name?.message}/>
+                    {
+                        mode == "signUp" &&
+                        <TextField fullWidth label="Name" size="small" {...register("name")} error={!!errors.name}
+                                   helperText={errors.name?.message}/>
+                    }
+
                     <TextField fullWidth label="Password" type="password" size="small" {...register("password")}
                                error={!!errors.password} helperText={errors.password?.message}/>
                     <div style={{display: "flex", justifyContent: "right", gap: 10}}>
@@ -93,4 +84,24 @@ function UserPasswordSignUpForm(props: Props) {
     );
 }
 
-export {UserPasswordSignUpForm};
+
+const signUpSchema = yup.object({
+    email: yup.string().required("Email is required").email(),
+    name: yup.string().required("Name is required"),
+    password: yup.string()
+        .required("Password is required")
+        .matches(/[a-z]/, 'Password must contain at least one lowercase letter')
+        .matches(/[A-Z]/, 'Password must contain at least one uppercase letter')
+        .matches(/[0-9]/, 'Password must contain at least one number')
+        .matches(/[@$!%*?&#]/, 'Password must contain at least one special character')
+        .min(8, "Password should be at least 8 characters")
+        .max(12, "Password cannot exceed more than 12 characters")
+}).required();
+
+const signInSchema = yup.object({
+    email: yup.string().required("Email is required").email(),
+    password: yup.string().required("Password is required")
+
+})
+
+export {UserPasswordSignForm};
