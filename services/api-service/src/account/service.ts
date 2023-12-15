@@ -1,5 +1,4 @@
 import * as repo from "./repo";
-
 import * as authController from "../auth/controller";
 import {throwHttpException} from "../utils/errors";
 import {SignMethod} from "../utils/jwt";
@@ -28,16 +27,14 @@ export async function findAccountAndVerifiedStatus(email: string, signMethod: Si
     if (!account) {
         throwHttpException("Account is not found")
     }
-    const {name, signUpTime, id} = account;
 
-    if (signMethod == "GOOGLE") {
-        return {name, signUpTime, verified: true}
-    }
+    const {name, signUpTime, id: accountId} = account;
+    const isGoogle = signMethod == "GOOGLE";
+    const verifyEmail = await authController.findAccountVerifyEmailByAccountId(accountId);
 
-    const verifyEmail = await authController.findAccountVerifyEmailByAccountId(account.id)
     return {
         name,
         signUpTime,
-        verified: !!verifyEmail
+        verified: isGoogle || !!verifyEmail
     }
 }

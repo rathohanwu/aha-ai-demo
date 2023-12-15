@@ -5,7 +5,6 @@ export async function findAccountByEmailAndPassword(email: string, password: str
     return service.findAccountByEmailAndPassword(email, password);
 }
 
-
 export async function createAccount(name: string, email: string, password?: string) {
     return service.createAccount(name, email, password);
 }
