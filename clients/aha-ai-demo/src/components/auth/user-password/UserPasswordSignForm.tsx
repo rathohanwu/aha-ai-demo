@@ -1,4 +1,4 @@
-import {Alert, Button, Snackbar, TextField} from "@mui/material";
+import {Alert, Button, CircularProgress, Snackbar, TextField} from "@mui/material";
 import {useForm, SubmitHandler} from "react-hook-form";
 import * as yup from "yup";
 import {yupResolver} from '@hookform/resolvers/yup';
@@ -21,6 +21,7 @@ type Props = {
 function UserPasswordSignForm(props: Props) {
 
     const {closeForm, mode} = props;
+    const [isLoading, setIsLoading] = useState(false);
     const [showMessage, setShowMessage] = useState(false);
     const [errorMessage, setErrorMessage] = useState("");
     const refreshLoginStatus = useLoginStore((state) => state.refresh);
@@ -30,6 +31,7 @@ function UserPasswordSignForm(props: Props) {
 
     const onSubmit: SubmitHandler<Inputs> = async (data) => {
         try {
+            setIsLoading(true);
             const url = mode == "signIn" ? "/auth/signin" : "/auth/signup";
             await api.post(url, data);
             refreshLoginStatus()
@@ -37,6 +39,8 @@ function UserPasswordSignForm(props: Props) {
             await router.push("/dashboard");
         } catch (err) {
             handleApiError(err);
+        } finally {
+            setIsLoading(false)
         }
     };
 
@@ -62,7 +66,23 @@ function UserPasswordSignForm(props: Props) {
                     {errorMessage}
                 </Alert>
             </Snackbar>
+
             <form onSubmit={handleSubmit(onSubmit)}>
+
+                {
+                    isLoading &&
+                    <div style={{
+                        position: "absolute",
+                        top: "50%",
+                        left: "50%",
+                        transform: "translate(-50%, -50%)",
+                        zIndex: 100
+                    }}>
+                        <CircularProgress/>
+                    </div>
+
+                }
+
                 <div style={{display: "flex", flexDirection: "column", gap: "12px"}}>
                     <TextField fullWidth label="Email" type="email" size="small" {...register("email")}
                                error={!!errors.email} helperText={errors.email?.message}/>
@@ -76,7 +96,7 @@ function UserPasswordSignForm(props: Props) {
                                error={!!errors.password} helperText={errors.password?.message}/>
                     <div style={{display: "flex", justifyContent: "right", gap: 10}}>
                         <Button variant="outlined" onClick={close}>Cancel</Button>
-                        <Button variant="contained" type="submit">Sign Up</Button>
+                        <Button variant="contained" type="submit">{mode == "signIn" ? "Sign In" : "Sign Up"}</Button>
                     </div>
                 </div>
             </form>
