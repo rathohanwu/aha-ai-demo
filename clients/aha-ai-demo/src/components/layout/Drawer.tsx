@@ -19,11 +19,16 @@ function Drawer() {
     const drawer = useModal();
     const router = useRouter();
 
+    const handleNavigation = async (route: string) => {
+        await router.push(route);
+        drawer.close();
+    };
+
     return (
         <div>
             <Button onClick={drawer.open}><MenuIcon/></Button>
             <MaterialUIDrawer
-                anchor={"left"}
+                anchor="left"
                 open={drawer.isOpen}
                 onClose={drawer.close}
             >
@@ -33,27 +38,48 @@ function Drawer() {
                 >
                     <Divider/>
                     <List>
-                        <ListItem key={"profile"} disablePadding>
-                            <ListItemButton onClick={() => router.push("/profile")}>
-                                <ListItemIcon>
-                                    <AccountBoxIcon/>
-                                </ListItemIcon>
-                                <ListItemText primary={"Profile"}/>
-                            </ListItemButton>
-                        </ListItem>
-
-                        <ListItem key={"dashboard"} disablePadding>
-                            <ListItemButton onClick={() => router.push("/dashboard")}>
-                                <ListItemIcon>
-                                    <DashboardIcon/>
-                                </ListItemIcon>
-                                <ListItemText primary={"Dashboard"}/>
-                            </ListItemButton>
-                        </ListItem>
+                        {navItems.map(item => (
+                            <NavItem
+                                key={item.key}
+                                item={item}
+                                onClick={() => handleNavigation(item.route)}
+                            />
+                        ))}
                     </List>
                 </Box>
             </MaterialUIDrawer>
         </div>
+    )
+}
+
+
+type NavItemProps = {
+    item: NavItemData;
+    onClick: () => void;
+}
+
+type NavItemData = {
+    key: string;
+    text: string;
+    icon: React.ReactNode;
+    route: string;
+}
+
+const navItems: NavItemData[] = [
+    {key: 'profile', text: 'Profile', icon: <AccountBoxIcon/>, route: '/profile'},
+    {key: 'dashboard', text: 'Dashboard', icon: <DashboardIcon/>, route: '/dashboard'},
+];
+
+function NavItem({item, onClick}: NavItemProps) {
+    return (
+        <ListItem key={item.key} disablePadding>
+            <ListItemButton onClick={onClick}>
+                <ListItemIcon>
+                    {item.icon}
+                </ListItemIcon>
+                <ListItemText primary={item.text}/>
+            </ListItemButton>
+        </ListItem>
     );
 }
 
