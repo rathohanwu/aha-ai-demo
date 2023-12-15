@@ -5,6 +5,7 @@ import {SubmitHandler, useForm} from "react-hook-form";
 import {yupResolver} from "@hookform/resolvers/yup";
 import {useAccountUpdate} from "@/hooks/account/useAccountUpdate";
 import {dismissMessage, showErrorMessage, showLoadingMessage, showSuccessfulMessage} from "@/utils/toast";
+import {passwordValidation} from "@/utils/validation";
 
 type Props = {
     closeForm: () => void
@@ -67,14 +68,7 @@ function AccountUpdatePasswordForm(props: Props) {
 
 const schema = yup.object({
     oldPassword: yup.string().required("Old password is required"),
-    newPassword: yup.string()
-        .required("Password is required")
-        .matches(/[a-z]/, 'Password must contain at least one lowercase letter')
-        .matches(/[A-Z]/, 'Password must contain at least one uppercase letter')
-        .matches(/[0-9]/, 'Password must contain at least one number')
-        .matches(/[@$!%*?&#]/, 'Password must contain at least one special character')
-        .min(8, "Password should be at least 8 characters")
-        .max(20, "Password cannot exceed more than 20 characters"),
+    newPassword: passwordValidation,
     passwordConfirmation: yup.string().required()
         .oneOf([yup.ref('newPassword')], 'Passwords must match')
 }).required();

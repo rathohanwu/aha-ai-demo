@@ -5,6 +5,7 @@ import {SubmitHandler, useForm} from "react-hook-form";
 import {yupResolver} from "@hookform/resolvers/yup";
 import {useAccountUpdate} from "@/hooks/account/useAccountUpdate";
 import {dismissMessage, showErrorMessage, showLoadingMessage, showSuccessfulMessage} from "@/utils/toast";
+import {nameValidation} from "@/utils/validation";
 
 type Props = {
     name?: string
@@ -58,7 +59,7 @@ function AccountUpdateForm(props: Props) {
 }
 
 const schema = yup.object({
-    name: yup.string().required("name is required")
+    name: nameValidation
 })
 
 export {AccountUpdateForm}

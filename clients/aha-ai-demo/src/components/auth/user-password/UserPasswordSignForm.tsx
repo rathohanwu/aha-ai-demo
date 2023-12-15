@@ -8,7 +8,7 @@ import {useRouter} from "next/router";
 import {useLoginStore} from "@/stores/loginStore";
 import {CircularProgress} from "@/components/feedback/CircularProgress";
 import {showErrorMessage} from "@/utils/toast";
-
+import {emailValidation, nameValidation, passwordValidation} from "@/utils/validation";
 
 type Inputs = {
     email: string,
@@ -79,21 +79,14 @@ function UserPasswordSignForm(props: Props) {
 
 
 const signUpSchema = yup.object({
-    email: yup.string().required("Email is required").email(),
-    name: yup.string().required("Name is required"),
-    password: yup.string()
-        .required("Password is required")
-        .matches(/[a-z]/, 'Password must contain at least one lowercase letter')
-        .matches(/[A-Z]/, 'Password must contain at least one uppercase letter')
-        .matches(/[0-9]/, 'Password must contain at least one number')
-        .matches(/[@$!%*?&#]/, 'Password must contain at least one special character')
-        .min(8, "Password should be at least 8 characters")
-        .max(20, "Password cannot exceed more than 20 characters")
+    email: emailValidation,
+    name: nameValidation,
+    password: passwordValidation
 }).required();
 
 const signInSchema = yup.object({
-    email: yup.string().required("Email is required").email(),
-    password: yup.string().required("Password is required")
+    email: emailValidation,
+    password: passwordValidation
 
 })
 
