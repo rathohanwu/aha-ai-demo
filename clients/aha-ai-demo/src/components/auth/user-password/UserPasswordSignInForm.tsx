@@ -5,6 +5,7 @@ import {yupResolver} from '@hookform/resolvers/yup';
 import {api} from "@/lib/api";
 import {useState} from "react";
 import {useRouter} from "next/router";
+import {useLoginStore} from "@/stores/loginStore";
 
 // Types
 type Inputs = {
@@ -28,6 +29,7 @@ function UserPasswordSignInForm(props: Props) {
     const {closeForm} = props;
     const [showMessage, setShowMessage] = useState(false);
     const [errorMessage, setErrorMessage] = useState("");
+    const refreshLoginStatus = useLoginStore((state) => state.refresh);
     const router = useRouter();
 
     const {register, handleSubmit, formState: {errors}} = useForm<Inputs>({resolver: yupResolver(formSchema)});
@@ -35,6 +37,7 @@ function UserPasswordSignInForm(props: Props) {
     const onSubmit: SubmitHandler<Inputs> = async (data) => {
         try {
             await api.post("/auth/signin", data);
+            refreshLoginStatus();
             closeForm();
             router.push("/dashboard");
         } catch (err) {
@@ -72,6 +75,7 @@ function UserPasswordSignInForm(props: Props) {
                                error={!!errors.password} helperText={errors.password?.message}/>
                     <div style={{display: "flex", justifyContent: "right", gap: 10}}>
                         <Button variant="outlined" onClick={close}>Cancel</Button>
+                        <Button variant="contained" type="submit">Sign In</Button>
                     </div>
                 </div>
             </form>

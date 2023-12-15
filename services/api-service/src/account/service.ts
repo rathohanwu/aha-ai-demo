@@ -1,7 +1,8 @@
 import * as repo from "./repo";
-import {signMethod} from "../utils/jwt";
+
 import * as authController from "../auth/controller";
 import {throwHttpException} from "../utils/errors";
+import {SignMethod} from "../utils/jwt";
 
 
 export function findAccountByEmailAndPassword(email: string, password: string) {
@@ -17,7 +18,7 @@ export function findAccountByEmail(email: string) {
     return repo.findAccountByEmail(email);
 }
 
-export async function findAccountAndVerifiedStatus(email: string, signMethod: signMethod): Promise<{
+export async function findAccountAndVerifiedStatus(email: string, signMethod: SignMethod): Promise<{
     name: string,
     signUpTime: Date,
     verified: boolean

@@ -3,6 +3,7 @@ import React, {useEffect, useState} from "react";
 import {CircularProgress} from "@mui/material";
 import {api} from "@/lib/api";
 import {useRouter} from "next/router";
+import {useLoginStore} from "@/stores/loginStore";
 
 
 function Login() {
@@ -12,12 +13,16 @@ function Login() {
     const code = searchPrams.get('code') ?? "";
     const [loading, setLoading] = useState(true);
     const [isError, setIsError] = useState(false)
+    const refreshLoginStatus = useLoginStore((state) => state.refresh);
 
     useEffect(() => {
         if (code) {
             const url = "/auth/google"
             api.post(url, {code})
-                .then(res => router.push("/dashboard"))
+                .then(res => {
+                    refreshLoginStatus()
+                    router.push("/dashboard")
+                })
                 .catch((error) => setIsError(true))
                 .finally(() => setLoading(false))
         }

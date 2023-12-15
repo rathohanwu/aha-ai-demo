@@ -3,7 +3,6 @@ import {Box} from "@mui/material";
 import {GoogleAuthButton} from "@/components/auth/google/GoogleAuthButton";
 import {UserPasswordSignUpForm} from "@/components/auth/user-password/UserPasswordSignUpForm";
 
-
 type Props = {
     closeForm: () => void
 }

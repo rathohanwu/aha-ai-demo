@@ -1,6 +1,7 @@
 import {prisma} from "../lib/db";
 import {getRandomCode} from "../utils/random-code";
 
+
 export async function findAccountVerifyEmailByAccountId(accountId: number) {
     return prisma.accountVerifyEmail.findFirst({
         where: {
@@ -33,11 +34,23 @@ export function findAccountVerifyEmailByCode(code: string) {
 
 export async function createAccountVerifyEmail(accountId: number) {
 
-    return await prisma.accountVerifyEmail.create({
+    return prisma.accountVerifyEmail.create({
         data: {
             code: getRandomCode(),
             accountId: accountId
         }
     })
 
+}
+
+
+export async function createAccountLogin(accountId: number) {
+
+    return prisma.accountLogin.create({
+        data: {
+            account: {
+                connect: {id: accountId}
+            }
+        }
+    })
 }

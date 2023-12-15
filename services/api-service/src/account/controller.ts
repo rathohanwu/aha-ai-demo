@@ -1,5 +1,5 @@
 import * as service from "./service";
-import {signMethod} from "../utils/jwt";
+import {SignMethod} from "../utils/jwt";
 
 export async function findAccountByEmailAndPassword(email: string, password: string) {
     return service.findAccountByEmailAndPassword(email, password);
@@ -16,7 +16,7 @@ export async function findAccountByEmail(email: string) {
 }
 
 
-export function findAccountAndVerifiedStatus(email: string, signMethod: signMethod) {
+export function findAccountAndVerifiedStatus(email: string, signMethod: SignMethod) {
     return service.findAccountAndVerifiedStatus(email, signMethod)
 }
 

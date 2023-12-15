@@ -1,0 +1,2 @@
+-- AlterTable
+ALTER TABLE "AccountLogin" ALTER COLUMN "logonTime" SET DEFAULT CURRENT_TIMESTAMP;

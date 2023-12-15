@@ -2,12 +2,12 @@ import * as jwt from "jsonwebtoken";
 import {createParamDecorator, ExecutionContext} from "@nestjs/common";
 import {throwHttpException} from "./errors";
 
-export type signMethod = "GOOGLE" | "PASSWORD";
+export type SignMethod = "GOOGLE" | "PASSWORD";
 
 type Account = {
     name: string,
     email: string,
-    signMethod: signMethod
+    signMethod: SignMethod
 }
 
 export type JwtToken = Account & { exp: number }

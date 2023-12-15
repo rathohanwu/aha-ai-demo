@@ -1,6 +1,6 @@
 import * as repo from "./repo";
 import {getGoogleUserInfo} from "../lib/auth";
-import {signJwt} from "../utils/jwt";
+import {signJwt, SignMethod} from "../utils/jwt";
 import {signInUserPasswordDto, signUpUserPasswordDto} from "./schema";
 import {throwHttpException} from "../utils/errors";
 import {sendEmail} from "../lib/mail";
@@ -12,14 +12,13 @@ export function findAccountVerifyEmailByAccountId(accountId: number) {
 
 export async function signGoogle(code: string) {
     const userInfo = await getGoogleUserInfo(code);
-    const existingAccount = await accountController.findAccountByEmail(userInfo.email);
-    if (existingAccount) {
-        const {name, email} = existingAccount;
-        return signJwt({name, email, signMethod: "GOOGLE"})
+    let account = await accountController.findAccountByEmail(userInfo.email);
+
+    if (!account) {
+        account = await accountController.createAccount(userInfo.name, userInfo.email);
     }
-    const newAccount = await accountController.createAccount(userInfo.name, userInfo.email);
-    const {name, email} = newAccount;
-    return signJwt({name, email, signMethod: "GOOGLE"})
+
+    return createJwtTokenAndAccountLogin(account, "GOOGLE");
 }
 
 export async function signUp(signUp: signUpUserPasswordDto) {
@@ -29,11 +28,10 @@ export async function signUp(signUp: signUpUserPasswordDto) {
         throwHttpException("the email is already registered");
     }
 
-    const {name, email, password} = signUp;
-    const account = await accountController.createAccount(name, email, password);
+    const account = await accountController.createAccount(signUp.name, signUp.email, signUp.password);
     const verifyEmail = await repo.createAccountVerifyEmail(account.id);
-    await sendEmail(email, name, `http://localhost:3020/account/verify?code=${verifyEmail.code}`);
-    return signJwt({name, email, signMethod: "PASSWORD"})
+    await sendEmail(account.email, account.name, `http://localhost:3020/auth/verify?code=${verifyEmail.code}`);
+    return createJwtTokenAndAccountLogin(account, "PASSWORD")
 
 }
 
@@ -43,10 +41,10 @@ export async function signIn(signIn: signInUserPasswordDto) {
     if (!account) {
         throwHttpException("the user name or password is wrong");
     }
-    const {name, email} = account;
-    return signJwt({name, email, signMethod: "PASSWORD"})
 
+    return createJwtTokenAndAccountLogin(account, "PASSWORD");
 }
+
 
 export async function verifyEmail(code: string) {
     const verifyEmail = await repo.findAccountVerifyEmailByCode(code);
@@ -59,5 +57,17 @@ export async function verifyEmail(code: string) {
         throwHttpException("the email has been verified");
     }
 
-    return repo.updateAccountVerifyEmailStatus(verifyEmail.id, true);
+    await repo.updateAccountVerifyEmailStatus(verifyEmail.id, true);
+    return "Email is Verified";
+
+}
+
+async function createJwtTokenAndAccountLogin(account: {
+    id: number,
+    name: string,
+    email: string
+}, signMethod: SignMethod) {
+    const {id, name, email} = account;
+    await repo.createAccountLogin(id);
+    return signJwt({name, email, signMethod});
 }

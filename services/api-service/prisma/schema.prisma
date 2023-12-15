@@ -30,7 +30,7 @@ model AccountVerifyEmail {
 
 model AccountLogin {
   id        Int      @id @default(autoincrement())
-  logonTime DateTime
-  Account   Account  @relation(fields: [accountId], references: [id])
+  logonTime DateTime  @default(now())
+  account   Account  @relation(fields: [accountId], references: [id])
   accountId Int
 }

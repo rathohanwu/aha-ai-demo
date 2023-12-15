@@ -5,6 +5,7 @@ import {yupResolver} from '@hookform/resolvers/yup';
 import {api} from "@/lib/api";
 import {useState} from "react";
 import {useRouter} from "next/router";
+import {useLoginStore} from "@/stores/loginStore";
 
 // Types
 type Inputs = {
@@ -36,6 +37,7 @@ function UserPasswordSignUpForm(props: Props) {
     const {closeForm} = props;
     const [showMessage, setShowMessage] = useState(false);
     const [errorMessage, setErrorMessage] = useState("");
+    const refreshLoginStatus = useLoginStore((state) => state.refresh);
     const router = useRouter();
 
     const {register, handleSubmit, formState: {errors}} = useForm<Inputs>({resolver: yupResolver(formSchema)});
@@ -43,8 +45,9 @@ function UserPasswordSignUpForm(props: Props) {
     const onSubmit: SubmitHandler<Inputs> = async (data) => {
         try {
             await api.post("/auth/signup", data);
+            refreshLoginStatus()
             closeForm();
-            router.push("/dashboard");
+            await router.push("/dashboard");
         } catch (err) {
             handleApiError(err);
         }

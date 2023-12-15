@@ -1,19 +1,29 @@
 import {Box, Button} from "@mui/material";
-import {useState} from "react";
-import {TransitionsModal} from "../TransitionsModal";
+import {useEffect, useState} from "react";
+import {TransitionsModal} from "../modal/TransitionsModal";
 import {SignUpForm} from "@/components/auth/SignUpForm";
 import {SignInForm} from "@/components/auth/SignInForm";
+import {useLoginStore} from "@/stores/loginStore";
 
 function NavBar() {
 
     const signUpModal = useModal();
     const signInModal = useModal();
+    const refreshLoginStatus = useLoginStore((state) => state.refresh);
+    const logout = useLoginStore((state) => state.logout);
+    const isLogin = useLoginStore((state) => state.isLogin);
+
+    useEffect(() => {
+        refreshLoginStatus()
+    }, [])
 
     return (
         <>
             <div style={{display: "flex", justifyContent: "flex-end", padding: "1em", gap: 10}}>
-                <Button variant={"contained"} onClick={signUpModal.open}>Sign Up</Button>
-                <Button variant={"outlined"} onClick={signInModal.open}>Sign In</Button>
+                {!isLogin && <Button variant={"contained"} onClick={signUpModal.open}>Sign Up</Button>}
+                {!isLogin && <Button variant={"outlined"} onClick={signInModal.open}>Sign In</Button>}
+                {isLogin && <Button variant={"outlined"} onClick={logout}>Log Out</Button>}
+
             </div>
 
             <Box sx={{
@@ -22,6 +32,7 @@ function NavBar() {
                 boxShadow: 1
             }}>
             </Box>
+
 
             <TransitionsModal
                 isOpen={signUpModal.isOpen}
