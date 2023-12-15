@@ -3,6 +3,15 @@ import * as authController from "../auth/controller";
 import {throwHttpException} from "../utils/errors";
 import {SignMethod} from "../utils/jwt";
 
+export async function updateAccountPasswordByEmail(email: string, oldPassword: string, password: string) {
+    const account = await findAccountByEmailAndPassword(email, oldPassword);
+    if (!account) {
+        throwHttpException("old password is wrong");
+    }
+    return repo.updateAccountPasswordByEmail(email, password);
+}
+
+
 export function updateAccountNameByEmail(email: string, name: string) {
     return repo.updateAccountNameByEmail(email, name);
 }

@@ -88,7 +88,7 @@ const signUpSchema = yup.object({
         .matches(/[0-9]/, 'Password must contain at least one number')
         .matches(/[@$!%*?&#]/, 'Password must contain at least one special character')
         .min(8, "Password should be at least 8 characters")
-        .max(12, "Password cannot exceed more than 12 characters")
+        .max(20, "Password cannot exceed more than 20 characters")
 }).required();
 
 const signInSchema = yup.object({

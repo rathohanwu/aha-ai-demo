@@ -1,6 +1,18 @@
 import * as md5 from "md5";
 import {prisma} from "../lib/db";
 
+export function updateAccountPasswordByEmail(email: string, password: string) {
+    return prisma.account.update({
+        data: {
+            password: md5(password) as string
+        },
+        where: {
+            email: email
+        }
+    })
+}
+
+
 export function updateAccountNameByEmail(email: string, name: string) {
     return prisma.account.update({
         data: {

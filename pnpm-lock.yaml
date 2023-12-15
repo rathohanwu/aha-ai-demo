@@ -77,9 +77,6 @@ importers:
 
   services/api-service:
     dependencies:
-      '@asteasolutions/zod-to-openapi':
-        specifier: ^6.3.0
-        version: 6.3.0(zod@3.22.4)
       '@google-cloud/local-auth':
         specifier: ^3.0.0
         version: 3.0.0
@@ -261,15 +258,6 @@ packages:
     transitivePeerDependencies:
       - chokidar
     dev: true
-
-  /@asteasolutions/zod-to-openapi@6.3.0(zod@3.22.4):
-    resolution: {integrity: sha512-ca7Svz3BWkMaIP3M1YGsyxgp7AcKXlTmy19ozhY0DslhatXbnyxdvxlmiI0TmvkIfi6RpQfm+eK1neVLsh6Riw==}
-    peerDependencies:
-      zod: ^3.20.2
-    dependencies:
-      openapi3-ts: 4.1.2
-      zod: 3.22.4
-    dev: false
 
   /@babel/code-frame@7.23.5:
     resolution: {integrity: sha512-CgH3s1a96LipHCmSUmYFPwY7MNx8C3avkq7i4Wl3cfa662ldtUe4VM1TPXX70pfmrlWTb6jLqTYrZyT2ZTJBgA==}
@@ -5866,12 +5854,6 @@ packages:
       is-wsl: 2.2.0
     dev: false
 
-  /openapi3-ts@4.1.2:
-    resolution: {integrity: sha512-B7gOkwsYMZO7BZXwJzXCuVagym2xhqsrilVvV0dnq2Di4+iLUXKVX9gOK23ZqaAHZOwABXN0QTdW8QnkUTX6DA==}
-    dependencies:
-      yaml: 2.3.4
-    dev: false
-
   /optionator@0.9.3:
     resolution: {integrity: sha512-JjCoypp+jKn1ttEFExxhetCKeJt9zhAgAve5FXHixTvFDW/5aEktX9bufBKLRRMdU7bNtpLfcGu94B3cdEJgjg==}
     engines: {node: '>= 0.8.0'}
@@ -7444,11 +7426,6 @@ packages:
   /yaml@1.10.2:
     resolution: {integrity: sha512-r3vXyErRCYJ7wg28yvBY5VSoAF8ZvlcW9/BwUzEtUsjvX/DKs24dIkuwjtuprwJJHsbyUbLApepYTR1BN4uHrg==}
     engines: {node: '>= 6'}
-
-  /yaml@2.3.4:
-    resolution: {integrity: sha512-8aAvwVUSHpfEqTQ4w/KMlf3HcRdt50E5ODIQJBw1fQ5RL34xabzxtUlzTXVqc4rkZsPbvrXKWnABCD7kWSmocA==}
-    engines: {node: '>= 14'}
-    dev: false
 
   /yargs-parser@21.0.1:
     resolution: {integrity: sha512-9BK1jFpLzJROCI5TzwZL/TU4gqjK5xiHV/RfWLOahrjAko/e4DJkRDZQXfvqAsiZzzYhgAzbgz6lg48jcm4GLg==}

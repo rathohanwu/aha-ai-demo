@@ -1,7 +1,6 @@
 import {api} from "@/lib/api";
 import {useAccount} from "@/hooks/account/useAccount";
 
-
 function useAccountUpdate() {
 
     const {mutate} = useAccount();
@@ -11,8 +10,14 @@ function useAccountUpdate() {
         await mutate();
     };
 
+    const updatePassword = async (data: any) => {
+        await api.patch('/account/password', data);
+    };
+
+
     return {
-        updateName
+        updateName,
+        updatePassword
     }
 
 }

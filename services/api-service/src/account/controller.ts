@@ -1,6 +1,10 @@
 import * as service from "./service";
 import {SignMethod} from "../utils/jwt";
 
+export function updateAccountPasswordByEmail(email: string, oldPassword: string, password: string) {
+    return service.updateAccountPasswordByEmail(email, oldPassword,password);
+}
+
 export async function findAccountByEmailAndPassword(email: string, password: string) {
     return service.findAccountByEmailAndPassword(email, password);
 }

@@ -33,7 +33,7 @@ export function verifyJwt(jwtToken: string) {
 
 export const UseJwtToken = createParamDecorator(
     (data: string, ctx: ExecutionContext) => {
-        const request = ctx.switchToHttp().getRequest()
+        const request = ctx.switchToHttp().getRequest();
         const jwtToken = request.headers["authorization"];
         if (!jwtToken) {
             throwHttpException("authentication is not found")

@@ -1,13 +1,35 @@
+import Typography from "@mui/material/Typography";
+import {Button} from "@mui/material";
 import {useAccount} from "@/hooks/account/useAccount";
+import {TransitionsModal} from "@/components/modal/TransitionsModal";
+import {useModal} from "@/hooks/modal/useModal";
+import {AccountUpdatePasswordForm} from "@/components/account/AccountUpdatePasswordForm";
 
 
 function Dashboard() {
 
-    const {account, isLoading} = useAccount();
+    const {account} = useAccount();
+    const accountModal = useModal();
 
     return (
         <div>
-            this is dash board {account?.name} and your sign up time is {new Date(account?.signUpTime ?? "").toString()}
+            <div style={{
+                display: "flex",
+                justifyContent: "space-between"
+            }}>
+                <Typography variant={"h5"}>Database Dashboard</Typography>
+                <Button variant={"contained"} onClick={accountModal.open}>Reset Password</Button>
+
+            </div>
+
+            <TransitionsModal
+                isOpen={accountModal.isOpen}
+                close={accountModal.close}
+            >
+                <AccountUpdatePasswordForm
+                    closeForm={accountModal.close}
+                />
+            </TransitionsModal>
         </div>
     )
 }
