@@ -22,7 +22,7 @@ export function signJwt(account: Account) {
 export function verifyJwt(jwtToken: string) {
 
     try {
-        return jwt.verify(jwtToken, JWT_SECRET_KEY) as JwtToken
+        return jwt.verify(jwtToken.replace("Bearer ", ""), JWT_SECRET_KEY) as JwtToken
     } catch (e) {
         console.error(e);
         throwHttpException("the authentication is wrong");
@@ -34,7 +34,7 @@ export function verifyJwt(jwtToken: string) {
 export const UseJwtToken = createParamDecorator(
     (data: string, ctx: ExecutionContext) => {
         const request = ctx.switchToHttp().getRequest()
-        const jwtToken = request.cookies?.[JWT_TOKEN_NAME];
+        const jwtToken = request.headers["authorization"];
         if (!jwtToken) {
             throwHttpException("authentication is not found")
         }

@@ -15,7 +15,7 @@ function GoogleAuthButton() {
         <Button
             variant={"outlined"}
             style={{display: "flex", gap: 10}}
-            onClick={() => window.location.href = `${googleAuthUrl}?client_id=${clientId}&scope=${scopes.join(" ")}&redirect_uri=http://localhost:3000/login&response_type=code`}
+            onClick={() => window.location.href = `${googleAuthUrl}?client_id=${clientId}&scope=${scopes.join(" ")}&redirect_uri=http://localhost:3000/login/google&response_type=code`}
         >
             <GoogleIcon fontSize={"small"}/>
             <Typography component={"h2"}>Sign Up With Google</Typography>

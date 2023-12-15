@@ -1,29 +1,49 @@
 import {z} from "zod";
+import {ApiProperty} from "@nestjs/swagger";
 
-export const signInGoogleSchema = z.object({
+
+export const SignInGoogleSchema = z.object({
     code: z.string()
 }).required();
 
+export class SignInGoogleDTO {
+    @ApiProperty()
+    code: string
+}
 
-export type signInGoogleDto = z.infer<typeof signInGoogleSchema>;
-
-export const signUpUserPasswordSchema = z.object({
+export const SignUpUserPasswordSchema = z.object({
     name: z.string(),
     email: z.string(),
     password: z.string()
 }).required()
 
-export type signUpUserPasswordDto = z.infer<typeof signUpUserPasswordSchema>;
+export class SignUpUserPasswordDTO {
+    @ApiProperty()
+    name: string
+    @ApiProperty()
+    email: string
+    @ApiProperty()
+    password: string
+}
 
-export const signInUserPasswordSchema = z.object({
+
+export const VerifyEmailCodeSchema = z.object({
+    code: z.string()
+}).required();
+
+export class VerifyEmailCodeDTO {
+    @ApiProperty()
+    code: string
+}
+
+export const SignInUserPasswordSchema = z.object({
     email: z.string(),
     password: z.string()
 }).required()
 
-export type signInUserPasswordDto = z.infer<typeof signInUserPasswordSchema>;
-
-export const verifyEmailCodeSchema = z.object({
-    code: z.string()
-}).required();
-
-export type verifyEmailCodeDto = z.infer<typeof verifyEmailCodeSchema>;
+export class SignInUserPasswordDTO {
+    @ApiProperty()
+    email: string
+    @ApiProperty()
+    password: string
+}

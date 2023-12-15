@@ -1,7 +1,7 @@
 import * as repo from "./repo";
 import {getGoogleUserInfo} from "../lib/auth";
 import {signJwt, SignMethod} from "../utils/jwt";
-import {signInUserPasswordDto, signUpUserPasswordDto} from "./schema";
+import {SignInUserPasswordDTO, SignUpUserPasswordDTO} from "./schema";
 import {throwHttpException} from "../utils/errors";
 import {sendEmail} from "../lib/mail";
 import * as accountController from "../account/controller";
@@ -21,7 +21,7 @@ export async function signGoogle(code: string) {
     return createJwtTokenAndAccountLogin(account, "GOOGLE");
 }
 
-export async function signUp(signUp: signUpUserPasswordDto) {
+export async function signUp(signUp: SignUpUserPasswordDTO) {
 
     const existingAccount = await accountController.findAccountByEmail(signUp.email);
     if (!!existingAccount) {
@@ -35,7 +35,7 @@ export async function signUp(signUp: signUpUserPasswordDto) {
 
 }
 
-export async function signIn(signIn: signInUserPasswordDto) {
+export async function signIn(signIn: SignInUserPasswordDTO) {
 
     const account = await accountController.findAccountByEmailAndPassword(signIn.email, signIn.password);
     if (!account) {

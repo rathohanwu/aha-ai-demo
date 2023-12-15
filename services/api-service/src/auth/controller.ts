@@ -1,15 +1,15 @@
 import * as service from "./service"
-import {signInUserPasswordDto, signUpUserPasswordDto} from "./schema";
+import {SignInUserPasswordDTO, SignUpUserPasswordDTO} from "./schema";
 
 export async function findAccountVerifyEmailByAccountId(accountId: number) {
     return service.findAccountVerifyEmailByAccountId(accountId);
 }
 
-export function signUp(signUp: signUpUserPasswordDto) {
+export function signUp(signUp: SignUpUserPasswordDTO) {
     return service.signUp(signUp);
 }
 
-export function signIn(signIn: signInUserPasswordDto) {
+export function signIn(signIn: SignInUserPasswordDTO) {
     return service.signIn(signIn);
 }
 
