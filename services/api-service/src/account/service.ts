@@ -1,9 +1,21 @@
 import * as repo from "./repo";
-import {getGoogleUserInfo} from "../lib/auth";
-import {signJwt, signMethod} from "../utils/jwt";
-import {signInUserPasswordDto, signUpUserPasswordDto} from "./schema";
+import {signMethod} from "../utils/jwt";
+import * as authController from "../auth/controller";
 import {throwHttpException} from "../utils/errors";
-import {sendEmail} from "../lib/mail";
+
+
+export function findAccountByEmailAndPassword(email: string, password: string) {
+    return repo.findAccountByEmailAndPassword(email, password);
+}
+
+
+export function createAccount(name: string, email: string, password?: string) {
+    return repo.createAccount(name, email, password);
+}
+
+export function findAccountByEmail(email: string) {
+    return repo.findAccountByEmail(email);
+}
 
 export async function findAccountAndVerifiedStatus(email: string, signMethod: signMethod): Promise<{
     name: string,
@@ -11,68 +23,20 @@ export async function findAccountAndVerifiedStatus(email: string, signMethod: si
     verified: boolean
 }> {
     const account = await repo.findAccountByEmail(email);
-    if (signMethod == "GOOGLE") {
-        return {
-            name: account.name,
-            signUpTime: account.signUpTime,
-            verified: true
-        }
+
+    if (!account) {
+        throwHttpException("Account is not found")
     }
-    const verifyEmail = await repo.findAccountVerifyEmailByAccountId(account.id)
+    const {name, signUpTime, id} = account;
+
+    if (signMethod == "GOOGLE") {
+        return {name, signUpTime, verified: true}
+    }
+
+    const verifyEmail = await authController.findAccountVerifyEmailByAccountId(account.id)
     return {
-        name: account.name,
-        signUpTime: account.signUpTime,
+        name,
+        signUpTime,
         verified: !!verifyEmail
     }
-}
-
-export async function verifyEmail(code: string) {
-    const verifyEmail = await repo.findAccountVerifyEmailByCode(code);
-
-    if (!verifyEmail) {
-        throwHttpException("the code of verified email is wrong");
-    }
-
-    if (verifyEmail.verified) {
-        throwHttpException("the email has been verified");
-    }
-
-    return repo.updateAccountVerifyEmailStatus(verifyEmail.id, true);
-}
-
-
-export async function signGoogle(code: string) {
-    const userInfo = await getGoogleUserInfo(code);
-    const existingAccount = await repo.findAccountByEmail(userInfo.email);
-    if (existingAccount) {
-        const {name, email} = existingAccount;
-        return signJwt({name, email, signMethod: "GOOGLE"})
-    }
-    const newAccount = await repo.createAccount(userInfo.name, userInfo.email);
-    const {name, email} = newAccount;
-    return signJwt({name, email, signMethod: "GOOGLE"})
-}
-
-export async function signUp(signUp: signUpUserPasswordDto) {
-
-    const existingAccount = await repo.findAccountByEmail(signUp.email);
-    if (!!existingAccount) {
-        throwHttpException("the email is already registered");
-    }
-    const {name, email, password} = signUp;
-    const verifyEmail = await repo.createAccountWithVerifyEmail(name, email, password);
-    await sendEmail(email, name, `http://localhost:3020/account/verify?code=${verifyEmail.code}`);
-    return signJwt({name, email, signMethod: "PASSWORD"})
-
-}
-
-export async function signIn(signIn: signInUserPasswordDto) {
-
-    const account = await repo.findAccountByEmailAndPassword(signIn.email, signIn.password);
-    if (!account) {
-        throwHttpException("the user name or password is wrong");
-    }
-    const {name, email} = account;
-    return signJwt({name, email, signMethod: "PASSWORD"})
-
 }

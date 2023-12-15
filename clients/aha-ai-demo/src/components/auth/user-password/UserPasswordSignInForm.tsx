@@ -9,31 +9,23 @@ import {useRouter} from "next/router";
 // Types
 type Inputs = {
     email: string,
-    name: string,
     password: string
 };
 
 // Validation Schema
 const formSchema = yup.object({
     email: yup.string().required("Email is required").email(),
-    name: yup.string().required("Name is required"),
-    password: yup.string()
-        .required("Password is required")
-        .matches(/[a-z]/, 'Password must contain at least one lowercase letter')
-        .matches(/[A-Z]/, 'Password must contain at least one uppercase letter')
-        .matches(/[0-9]/, 'Password must contain at least one number')
-        .matches(/[@$!%*?&#]/, 'Password must contain at least one special character')
-        .min(8, "Password should be at least 8 characters")
-        .max(12, "Password cannot exceed more than 12 characters")
-}).required();
+    password: yup.string().required("Password is required")
+
+})
 
 type Props = {
-    close: () => void
+    closeForm: () => void
 }
 
-function UserPasswordSignUpForm(props: Props) {
+function UserPasswordSignInForm(props: Props) {
 
-    const {close} = props;
+    const {closeForm} = props;
     const [showMessage, setShowMessage] = useState(false);
     const [errorMessage, setErrorMessage] = useState("");
     const router = useRouter();
@@ -42,8 +34,8 @@ function UserPasswordSignUpForm(props: Props) {
 
     const onSubmit: SubmitHandler<Inputs> = async (data) => {
         try {
-            await api.post("account/auth/signup", data);
-            close();
+            await api.post("/auth/signin", data);
+            closeForm();
             router.push("/dashboard");
         } catch (err) {
             handleApiError(err);
@@ -76,13 +68,10 @@ function UserPasswordSignUpForm(props: Props) {
                 <div style={{display: "flex", flexDirection: "column", gap: "12px"}}>
                     <TextField fullWidth label="Email" type="email" size="small" {...register("email")}
                                error={!!errors.email} helperText={errors.email?.message}/>
-                    <TextField fullWidth label="Name" size="small" {...register("name")} error={!!errors.name}
-                               helperText={errors.name?.message}/>
                     <TextField fullWidth label="Password" type="password" size="small" {...register("password")}
                                error={!!errors.password} helperText={errors.password?.message}/>
                     <div style={{display: "flex", justifyContent: "right", gap: 10}}>
                         <Button variant="outlined" onClick={close}>Cancel</Button>
-                        <Button variant="contained" type="submit">Sign Up</Button>
                     </div>
                 </div>
             </form>
@@ -90,4 +79,4 @@ function UserPasswordSignUpForm(props: Props) {
     );
 }
 
-export {UserPasswordSignUpForm};
+export {UserPasswordSignInForm};

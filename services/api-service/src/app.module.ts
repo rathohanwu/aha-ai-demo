@@ -1,8 +1,10 @@
-import { Module } from '@nestjs/common';
+import {Module} from '@nestjs/common';
 import {AccountRouter} from "./account/router";
+import {AuthRouter} from "./auth/router";
 
 @Module({
-  imports: [],
-  controllers: [AccountRouter],
+    imports: [],
+    controllers: [AccountRouter, AuthRouter],
 })
-export class AppModule {}
+export class AppModule {
+}

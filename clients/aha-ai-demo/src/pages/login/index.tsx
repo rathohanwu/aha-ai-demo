@@ -15,7 +15,7 @@ function Login() {
 
     useEffect(() => {
         if (code) {
-            const url = "account/auth/google"
+            const url = "/auth/google"
             api.post(url, {code})
                 .then(res => router.push("/dashboard"))
                 .catch((error) => setIsError(true))

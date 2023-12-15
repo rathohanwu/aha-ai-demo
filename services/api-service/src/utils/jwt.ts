@@ -16,7 +16,7 @@ const JWT_SECRET_KEY = "SECRET";
 export const JWT_TOKEN_NAME = "JWT_TOKEN";
 
 export function signJwt(account: Account) {
-    return jwt.sign({...account, exp: Math.floor(Date.now() / 1000) + (60 * 60)}, JWT_SECRET_KEY)
+    return jwt.sign({...account}, JWT_SECRET_KEY, {expiresIn: "7 days"})
 }
 
 export function verifyJwt(jwtToken: string) {
@@ -24,6 +24,7 @@ export function verifyJwt(jwtToken: string) {
     try {
         return jwt.verify(jwtToken, JWT_SECRET_KEY) as JwtToken
     } catch (e) {
+        console.error(e);
         throwHttpException("the authentication is wrong");
     }
 

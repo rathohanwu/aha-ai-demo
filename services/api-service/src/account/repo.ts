@@ -1,60 +1,5 @@
 import * as md5 from "md5";
 import {prisma} from "../lib/db";
-import {getRandomCode} from "../utils/random-code";
-
-export async function findAccountVerifyEmailByAccountId(accountId: number) {
-    return prisma.accountVerifyEmail.findFirst({
-        where: {
-            accountId: accountId,
-            verified: true
-        }
-    })
-}
-
-
-export function updateAccountVerifyEmailStatus(id: number, verified: boolean) {
-    return prisma.accountVerifyEmail.update({
-        data: {
-            verified: verified
-        },
-        where: {
-            id: id
-        }
-    })
-}
-
-
-export function findAccountVerifyEmailByCode(code: string) {
-    return prisma.accountVerifyEmail.findUnique({
-        where: {
-            code: code
-        }
-    })
-}
-
-
-export async function createAccountWithVerifyEmail(name: string, email: string, password: string) {
-
-    return prisma.$transaction(async (tx) => {
-
-        const account = await tx.account.create({
-            data: {
-                name: name,
-                password: password ? md5(password) as string : null,
-                email: email
-            }
-        })
-
-        const verifyEmail = await tx.accountVerifyEmail.create({
-            data: {
-                code: getRandomCode(),
-                accountId: account.id
-            }
-        })
-
-        return verifyEmail;
-    })
-}
 
 export async function findAccountByEmailAndPassword(email: string, password: string) {
     return prisma.account.findUnique({
@@ -66,11 +11,12 @@ export async function findAccountByEmailAndPassword(email: string, password: str
 }
 
 
-export function createAccount(name: string, email: string) {
+export function createAccount(name: string, email: string, password?: string) {
     return prisma.account.create({
         data: {
             name: name,
-            email: email
+            email: email,
+            password: password ? md5(password) as string : null,
         }
     })
 }
