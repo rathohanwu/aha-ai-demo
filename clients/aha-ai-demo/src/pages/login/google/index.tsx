@@ -64,7 +64,6 @@ function LoginGoogle() {
 
             <Typography variant={"h5"}>{progressDisplay.message}</Typography>
             <LinearProgress color={progressDisplay.color}/>
-
         </div>
     )
 }

@@ -4,7 +4,7 @@ import * as yup from "yup";
 import {SubmitHandler, useForm} from "react-hook-form";
 import {yupResolver} from "@hookform/resolvers/yup";
 import {useAccountUpdate} from "@/hooks/account/useAccountUpdate";
-import {dismissMessage, showErrorMessage, showLoadingMessage, showSuccessfulMessage} from "@/utils/toast";
+import {dismissMessage, showAPIErrorMessage, showLoadingMessage, showSuccessfulMessage} from "@/utils/toast";
 import {passwordValidation} from "@/utils/validation";
 
 type Props = {
@@ -30,7 +30,7 @@ function AccountUpdatePasswordForm(props: Props) {
             showSuccessfulMessage("update password successfully");
             closeForm();
         } catch (err) {
-            showErrorMessage(err);
+            showAPIErrorMessage(err);
         } finally {
             setTimeout(() => dismissMessage(), 2000)
         }

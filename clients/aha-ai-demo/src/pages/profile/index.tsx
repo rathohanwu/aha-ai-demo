@@ -5,6 +5,7 @@ import {useAccountUpdate} from "@/hooks/account/useAccountUpdate";
 import {useModal} from "@/hooks/modal/useModal";
 import {TransitionsModal} from "@/components/modal/TransitionsModal";
 import {AccountUpdateForm} from "@/components/account/AccountUpdateForm";
+import AuthWrapComponent from "@/components/auth/AuthWrapComponent";
 
 function Profile() {
 
@@ -37,4 +38,4 @@ function Profile() {
 }
 
 
-export default Profile
+export default AuthWrapComponent(Profile)

@@ -15,6 +15,7 @@ const useLoginStore = create<LoginState>((set, get) => ({
         set({isLogin: !!cookie.get(JWT_TOKEN_NAME)})
     },
     logout: () => {
+        window.location.href = "http://localhost:3000/"
         cookie.remove(JWT_TOKEN_NAME);
         get().refresh();
     }

@@ -4,7 +4,7 @@ import * as yup from "yup";
 import {SubmitHandler, useForm} from "react-hook-form";
 import {yupResolver} from "@hookform/resolvers/yup";
 import {useAccountUpdate} from "@/hooks/account/useAccountUpdate";
-import {dismissMessage, showErrorMessage, showLoadingMessage, showSuccessfulMessage} from "@/utils/toast";
+import {dismissMessage, showAPIErrorMessage, showLoadingMessage, showSuccessfulMessage} from "@/utils/toast";
 import {nameValidation} from "@/utils/validation";
 
 type Props = {
@@ -29,7 +29,7 @@ function AccountUpdateForm(props: Props) {
             showSuccessfulMessage("update name successful");
             closeForm();
         } catch (err) {
-            showErrorMessage(err);
+            showAPIErrorMessage(err);
         } finally {
             setTimeout(() => dismissMessage(), 2000)
         }

@@ -7,7 +7,7 @@ import {useState} from "react";
 import {useRouter} from "next/router";
 import {useLoginStore} from "@/stores/loginStore";
 import {CircularProgress} from "@/components/feedback/CircularProgress";
-import {showErrorMessage} from "@/utils/toast";
+import {showAPIErrorMessage} from "@/utils/toast";
 import {emailValidation, nameValidation, passwordValidation} from "@/utils/validation";
 
 type Inputs = {
@@ -42,7 +42,7 @@ function UserPasswordSignForm(props: Props) {
                 await router.push("/dashboard");
             }, 2000)
         } catch (err) {
-            showErrorMessage(err);
+            showAPIErrorMessage(err);
             setIsLoading(false)
         }
     };
