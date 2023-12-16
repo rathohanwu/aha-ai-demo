@@ -20,8 +20,9 @@ export class AuthRouter {
 
     @Get("verify")
     @UsePipes(ValidationPipe(VerifyEmailCodeSchema))
-    verifyEmail(@Query() verifyEmail: VerifyEmailCodeDTO) {
-        return controller.verifyEmail(verifyEmail.code);
+    async verifyEmail(@Query() verifyEmail: VerifyEmailCodeDTO, @Res() res: Response) {
+        const isVerified = await controller.verifyEmail(verifyEmail.code);
+        isVerified ? res.redirect("http://localhost:3000/dashboard") : res.send("email verification is wrong");
     }
 
     @Post("google")
@@ -48,6 +49,7 @@ export class AuthRouter {
     private setJwtCookie(response: Response, jwtToken: string) {
         return response.cookie(JWT_TOKEN_NAME, jwtToken, {
             sameSite: 'lax',
+            httpOnly: true
         });
     }
 

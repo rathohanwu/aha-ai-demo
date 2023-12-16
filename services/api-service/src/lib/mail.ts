@@ -7,7 +7,7 @@ const mailerSend = new MailerSend({
 export function sendEmail(to: string, name: string, verifyEmailLink: string) {
 
     const sentFrom = new Sender("support@scytale.pro", "AHA AI DEMO")
-    const recipients = [new Recipient("support@scytale.pro", name)]
+    const recipients = [new Recipient(to, name)];
     const emailParams = new EmailParams()
         .setFrom(sentFrom)
         .setTo(recipients)

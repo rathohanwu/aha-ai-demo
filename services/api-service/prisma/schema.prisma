@@ -24,13 +24,13 @@ model AccountVerifyEmail {
   id        Int     @id @default(autoincrement())
   code      String  @unique
   verified  Boolean @default(false)
-  account   Account @relation(fields: [accountId], references: [id])
+  account   Account @relation(fields: [accountId], references: [id], onDelete: Cascade)
   accountId Int
 }
 
 model AccountLogin {
   id        Int      @id @default(autoincrement())
-  logonTime DateTime  @default(now())
-  account   Account  @relation(fields: [accountId], references: [id])
+  logonTime DateTime @default(now())
+  account   Account  @relation(fields: [accountId], references: [id], onDelete: Cascade)
   accountId Int
 }

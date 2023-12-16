@@ -57,8 +57,13 @@ export async function verifyEmail(code: string) {
         throwHttpException("the email has been verified");
     }
 
-    await repo.updateAccountVerifyEmailStatus(verifyEmail.id, true);
-    return "Email is Verified";
+    try {
+        await repo.updateAccountVerifyEmailStatus(verifyEmail.id, true);
+        return true;
+    } catch (e) {
+        return false;
+    }
+
 
 }
 
