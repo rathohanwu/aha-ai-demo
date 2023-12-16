@@ -25,7 +25,7 @@ function LoginGoogle() {
             const url = "/auth/google"
             api.post(url, {code})
                 .then(res => {
-                    refreshLoginStatus()
+                    refreshLoginStatus();
                     setProgressDisplay({
                         color: "success",
                         message: "Login successfully, will redirect to dashboard"
