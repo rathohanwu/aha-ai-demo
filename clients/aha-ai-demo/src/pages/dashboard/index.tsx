@@ -7,12 +7,26 @@ import {AccountUpdatePasswordForm} from "@/components/account/AccountUpdatePassw
 import UserStatistics from "@/components/dashboard/UserStatistics";
 import {useAccounts} from "@/hooks/dashboard/useAccounts";
 import AuthWrapComponent from "@/components/auth/AuthWrapComponent";
+import {api} from "@/lib/api";
+import {dismissMessage, showAPIErrorMessage, showLoadingMessage} from "@/utils/toast";
 
 function Dashboard() {
 
     const {account} = useAccount();
     const {accounts} = useAccounts();
     const accountModal = useModal();
+
+    async function resendEmail() {
+
+        try {
+            showLoadingMessage("Sending Email");
+            await api.post("auth/mail/resend");
+            dismissMessage();
+        } catch (e) {
+            showAPIErrorMessage(e);
+        }
+
+    }
 
     return (
         <div>
@@ -27,15 +41,23 @@ function Dashboard() {
                         gap: 10
                     }}
                 >
-                    <Button variant={"contained"} onClick={accountModal.open}>Reset Password</Button>
-                    {!account?.verified && <Button variant={"outlined"}>Resend Email</Button>}
+                    {
+                        account?.verified ?
+                            <Button variant={"contained"} onClick={accountModal.open}>Reset Password</Button> :
+                            <Button variant={"outlined"} onClick={resendEmail}>Resend Email</Button>
+                    }
+
                 </div>
             </div>
 
-            <UserStatistics
-                verified={account?.verified ?? false}
-                accounts={accounts ?? []}
-            />
+            {
+                account?.verified &&
+                <UserStatistics
+                    verified={account?.verified ?? false}
+                    accounts={accounts ?? []}
+                />
+            }
+
 
             <TransitionsModal
                 isOpen={accountModal.isOpen}
@@ -50,3 +72,4 @@ function Dashboard() {
 }
 
 export default AuthWrapComponent(Dashboard)
+

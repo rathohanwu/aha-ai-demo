@@ -6,6 +6,15 @@ import {throwHttpException} from "../utils/errors";
 import {sendEmail} from "../lib/mail";
 import * as accountController from "../account/controller";
 
+export async function resendVerifyEmail(email: string, signMethod: SignMethod) {
+    const account = await accountController.findAccountAndVerifiedStatus(email, signMethod);
+    if (account.verified) {
+        throwHttpException("the email has been verified")
+    }
+    return sendVerificationEmail(account.email,account.name, account.id);
+}
+
+
 export function findAccountVerifyEmailByAccountId(accountId: number) {
     return repo.findAccountVerifyEmailByAccountId(accountId);
 }
@@ -29,11 +38,16 @@ export async function signUp(signUp: SignUpUserPasswordDTO) {
     }
 
     const account = await accountController.createAccount(signUp.name, signUp.email, signUp.password);
-    const verifyEmail = await repo.createAccountVerifyEmail(account.id);
-    await sendEmail(account.email, account.name, `http://localhost:3020/auth/verify?code=${verifyEmail.code}`);
+    await sendVerificationEmail(account.email, account.name, account.id);
     return createJwtTokenAndAccountLogin(account, "PASSWORD")
 
 }
+
+async function sendVerificationEmail(email: string, name: string, accountId: number) {
+    const verifyEmail = await repo.createAccountVerifyEmail(accountId);
+    return sendEmail(email, name, `http://localhost:3020/auth/verify?code=${verifyEmail.code}`);
+}
+
 
 export async function signIn(signIn: SignInUserPasswordDTO) {
 

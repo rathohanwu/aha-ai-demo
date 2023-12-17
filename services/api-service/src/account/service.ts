@@ -30,6 +30,7 @@ export function findAccountByEmail(email: string) {
 }
 
 export async function findAccountAndVerifiedStatus(email: string, signMethod: SignMethod): Promise<{
+    id: number,
     name: string,
     email: string,
     signUpTime: Date,
@@ -41,11 +42,12 @@ export async function findAccountAndVerifiedStatus(email: string, signMethod: Si
         throwHttpException("Account is not found")
     }
 
-    const {name, signUpTime, id: accountId, email: accountEmail} = account;
+    const {name, signUpTime, id, email: accountEmail} = account;
     const isGoogle = signMethod == "GOOGLE";
-    const verifyEmail = await authController.findAccountVerifyEmailByAccountId(accountId);
+    const verifyEmail = await authController.findAccountVerifyEmailByAccountId(id);
 
     return {
+        id,
         name,
         email: accountEmail,
         signUpTime,

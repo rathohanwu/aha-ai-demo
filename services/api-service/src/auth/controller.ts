@@ -1,5 +1,10 @@
 import * as service from "./service"
 import {SignInUserPasswordDTO, SignUpUserPasswordDTO} from "./schema";
+import {SignMethod} from "../utils/jwt";
+
+export function resendVerifyEmail(email: string, signMethod: SignMethod) {
+    return service.resendVerifyEmail(email,signMethod);
+}
 
 export async function findAccountVerifyEmailByAccountId(accountId: number) {
     return service.findAccountVerifyEmailByAccountId(accountId);

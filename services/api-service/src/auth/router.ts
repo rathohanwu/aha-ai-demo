@@ -11,8 +11,8 @@ import {
 import * as controller from "./controller";
 import {Response} from "express";
 
-import {JWT_TOKEN_NAME} from "../utils/jwt";
-import {ApiTags} from "@nestjs/swagger";
+import {JWT_TOKEN_NAME, JwtToken, UseJwtToken} from "../utils/jwt";
+import {ApiBearerAuth, ApiTags} from "@nestjs/swagger";
 
 @ApiTags('Auth')
 @Router("auth")
@@ -44,6 +44,12 @@ export class AuthRouter {
     async signIn(@Body() signIn: SignInUserPasswordDTO, @Res({passthrough: true}) response: Response) {
         const jwtToken = await controller.signIn(signIn);
         this.setJwtCookie(response, jwtToken);
+    }
+
+    @Post("mail/resend")
+    @ApiBearerAuth("access-token")
+    resendVerifyEmail(@UseJwtToken() jwtToken: JwtToken) {
+        return controller.resendVerifyEmail(jwtToken.email, jwtToken.signMethod);
     }
 
     private setJwtCookie(response: Response, jwtToken: string) {
