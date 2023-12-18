@@ -1,16 +1,10 @@
-import {Account} from "@/types/account";
 import {Paper, Table, TableContainer, TableRow, TableHead, TableCell, TableBody} from "@mui/material";
 import {formatDate} from "@/utils/date";
+import {useUsers} from "@/hooks/dashboard/useUsers";
 
-type Props = {
-    verified: boolean,
-    accounts: Account[]
-}
+function UserTable() {
 
-function UserStatistics(props: Props) {
-
-    const {verified, accounts} = props;
-    if (!verified) return <div></div>
+    const {users} = useUsers();
 
     return (
         <div>
@@ -25,7 +19,7 @@ function UserStatistics(props: Props) {
                         </TableRow>
                     </TableHead>
                     <TableBody>
-                        {accounts.map((account) => (
+                        {users?.map((account) => (
                             <TableRow
                                 key={account.email}
                                 sx={{'&:last-child td, &:last-child th': {border: 0}}}
@@ -46,4 +40,4 @@ function UserStatistics(props: Props) {
 }
 
 
-export default UserStatistics
+export default UserTable

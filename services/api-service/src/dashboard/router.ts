@@ -15,7 +15,7 @@ export class DashBoardRouter {
         return controller.getUsers(jwtToken.email, jwtToken.signMethod);
     }
 
-    @Get("user/overview")
+    @Get("users/overview")
     @ApiBearerAuth("access-token")
     async getUserOverview(@UseJwtToken() jwtToken: JwtToken) {
         return controller.getUserOverview();

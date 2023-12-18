@@ -30,7 +30,7 @@ export async function getUserOverview(): Promise<
     return {
         totalCount: results[0]._all,
         todayActiveCount: results[1],
-        lastSevenDayActiveCount: results[2],
+        lastSevenDayActiveCount: results[2] / 7,
     }
 
 }

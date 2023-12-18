@@ -4,16 +4,16 @@ import {useAccount} from "@/hooks/account/useAccount";
 import {TransitionsModal} from "@/components/modal/TransitionsModal";
 import {useModal} from "@/hooks/modal/useModal";
 import {AccountUpdatePasswordForm} from "@/components/account/AccountUpdatePasswordForm";
-import UserStatistics from "@/components/dashboard/UserStatistics";
-import {useAccounts} from "@/hooks/dashboard/useAccounts";
+import {useUsers} from "@/hooks/dashboard/useUsers";
 import AuthWrapComponent from "@/components/auth/AuthWrapComponent";
 import {api} from "@/lib/api";
 import {dismissMessage, showAPIErrorMessage, showLoadingMessage} from "@/utils/toast";
+import UserTable from "@/components/dashboard/UserTable";
+import UserOverview from "@/components/dashboard/UserOverview";
 
 function Dashboard() {
 
     const {account} = useAccount();
-    const {accounts} = useAccounts();
     const accountModal = useModal();
 
     async function resendEmail() {
@@ -52,10 +52,15 @@ function Dashboard() {
 
             {
                 account?.verified &&
-                <UserStatistics
-                    verified={account?.verified ?? false}
-                    accounts={accounts ?? []}
-                />
+                <div style={{
+                    padding: "1em",
+                    display: "flex",
+                    flexDirection: "column",
+                    gap: 10
+                }}>
+                    <UserOverview/>
+                    <UserTable/>
+                </div>
             }
 
 
