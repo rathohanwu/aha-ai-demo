@@ -6,6 +6,7 @@ export function findAccountAndLoginTimes() {
             name: true,
             email: true,
             signUpTime: true,
+            activeTime: true,
             _count: {
                 select: {
                     logins: true

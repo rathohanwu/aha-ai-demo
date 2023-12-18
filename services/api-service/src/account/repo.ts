@@ -4,7 +4,7 @@ import {prisma} from "../lib/db";
 export function updateAccountActiveTimeByEmails(emails: string[]) {
     return prisma.account.updateMany({
         data: {
-            acitveTime: new Date()
+            activeTime: new Date()
         },
         where: {
             email: {
