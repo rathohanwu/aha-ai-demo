@@ -1,25 +1,27 @@
-import {z} from "zod";
-import {ApiProperty} from "@nestjs/swagger";
+import {z} from 'zod';
+import {ApiProperty} from '@nestjs/swagger';
 
-export const AccountNameUpdateSchema = z.object({
+export const AccountNameUpdateSchema = z
+  .object({
     name: z.string(),
-}).required()
+  })
+  .required();
 
 export class AccountNameUpdateDTO {
-    @ApiProperty()
-    name: string
+  @ApiProperty()
+  name: string;
 }
 
-export const AccountPasswordUpdateSchema = z.object({
+export const AccountPasswordUpdateSchema = z
+  .object({
     oldPassword: z.string(),
-    newPassword: z.string()
-}).required();
+    newPassword: z.string(),
+  })
+  .required();
 
 export class AccountPasswordUpdateDTO {
-
-    @ApiProperty()
-    oldPassword: string
-    @ApiProperty()
-    newPassword: string
-
+  @ApiProperty()
+  oldPassword: string;
+  @ApiProperty()
+  newPassword: string;
 }

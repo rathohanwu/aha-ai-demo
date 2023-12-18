@@ -1,38 +1,39 @@
-import {prisma} from "../lib/db";
-import * as moment from "moment";
+import {prisma} from '../lib/db';
 
 export function findAccountAndLoginTimes() {
-    return prisma.account.findMany({
+  return prisma.account.findMany({
+    select: {
+      name: true,
+      email: true,
+      signUpTime: true,
+      activeTime: true,
+      _count: {
         select: {
-            name: true,
-            email: true,
-            signUpTime: true,
-            activeTime: true,
-            _count: {
-                select: {
-                    logins: true
-                }
-            }
+          logins: true,
         },
-    });
+      },
+    },
+  });
 }
 
 export function findAccountCount() {
-    return prisma.account.count({
-        select: {
-            _all: true
-        }
-    })
+  return prisma.account.count({
+    select: {
+      _all: true,
+    },
+  });
 }
 
-export function findAccountCountByActiveTimeRange(startDate: Date, endDate: Date) {
-
-    return prisma.account.count({
-        where: {
-            activeTime: {
-                gte: startDate,
-                lt: endDate
-            }
-        }
-    })
+export function findAccountCountByActiveTimeRange(
+  startDate: Date,
+  endDate: Date
+) {
+  return prisma.account.count({
+    where: {
+      activeTime: {
+        gte: startDate,
+        lt: endDate,
+      },
+    },
+  });
 }
