@@ -1,5 +1,5 @@
-import {HttpException} from "@nestjs/common";
+import {HttpException} from '@nestjs/common';
 
 export function throwHttpException(message: string, status = 430) {
-    throw new HttpException(message, status);
+  throw new HttpException(message, status);
 }

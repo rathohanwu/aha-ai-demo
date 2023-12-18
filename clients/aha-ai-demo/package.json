@@ -6,7 +6,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "gts lint",
+    "fix": "gts fix"
   },
   "dependencies": {
     "@emotion/react": "^11.11.1",
@@ -17,6 +18,7 @@
     "@mui/x-charts": "^6.18.3",
     "axios": "^1.6.2",
     "dayjs": "^1.11.10",
+    "gts": "^5.2.0",
     "js-cookie": "^3.0.5",
     "next": "14.0.4",
     "react": "^18",

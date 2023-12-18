@@ -9,4 +9,5 @@ type Account = {
     }
 }
 
+// eslint-disable-next-line prettier/prettier
 export {type Account}
