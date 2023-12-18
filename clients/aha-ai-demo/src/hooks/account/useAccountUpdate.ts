@@ -1,25 +1,22 @@
-import {api} from "@/lib/api";
-import {useAccount} from "@/hooks/account/useAccount";
+import {api} from '@/lib/api';
+import {useAccount} from '@/hooks/account/useAccount';
 
 function useAccountUpdate() {
+  const {mutate} = useAccount();
 
-    const {mutate} = useAccount();
+  const updateName = async <T>(data: T) => {
+    await api.patch('/account/name', data);
+    await mutate();
+  };
 
-    const updateName = async (data: any) => {
-        await api.patch('/account/name', data);
-        await mutate();
-    };
+  const updatePassword = async <T>(data: T) => {
+    await api.patch('/account/password', data);
+  };
 
-    const updatePassword = async (data: any) => {
-        await api.patch('/account/password', data);
-    };
-
-
-    return {
-        updateName,
-        updatePassword
-    }
-
+  return {
+    updateName,
+    updatePassword,
+  };
 }
 
-export {useAccountUpdate}
+export {useAccountUpdate};

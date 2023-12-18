@@ -11,76 +11,81 @@ import ListItemText from '@mui/material/ListItemText';
 import MenuIcon from '@mui/icons-material/Menu';
 import AccountBoxIcon from '@mui/icons-material/AccountBox';
 import DashboardIcon from '@mui/icons-material/Dashboard';
-import {useRouter} from "next/router";
-import {useModal} from "@/hooks/modal/useModal";
+import {useRouter} from 'next/router';
+import {useModal} from '@/hooks/modal/useModal';
 
 function Drawer() {
+  const drawer = useModal();
+  const router = useRouter();
 
-    const drawer = useModal();
-    const router = useRouter();
+  const handleNavigation = async (route: string) => {
+    await router.push(route);
+    drawer.close();
+  };
 
-    const handleNavigation = async (route: string) => {
-        await router.push(route);
-        drawer.close();
-    };
-
-    return (
-        <div>
-            <Button onClick={drawer.open}><MenuIcon/></Button>
-            <MaterialUIDrawer
-                anchor="left"
-                open={drawer.isOpen}
-                onClose={drawer.close}
-            >
-                <Box
-                    role="presentation"
-                    width={250}
-                >
-                    <Divider/>
-                    <List>
-                        {navItems.map(item => (
-                            <NavItem
-                                key={item.key}
-                                item={item}
-                                onClick={() => handleNavigation(item.route)}
-                            />
-                        ))}
-                    </List>
-                </Box>
-            </MaterialUIDrawer>
-        </div>
-    )
+  return (
+    <div>
+      <Button onClick={drawer.open}>
+        <MenuIcon />
+      </Button>
+      <MaterialUIDrawer
+        anchor="left"
+        open={drawer.isOpen}
+        onClose={drawer.close}
+      >
+        <Box role="presentation" width={250}>
+          <Divider />
+          <List>
+            {navItems.map(item => (
+              <NavItem
+                key={item.key}
+                item={item}
+                onClick={() => handleNavigation(item.route)}
+              />
+            ))}
+          </List>
+        </Box>
+      </MaterialUIDrawer>
+    </div>
+  );
 }
-
 
 type NavItemProps = {
-    item: NavItemData;
-    onClick: () => void;
-}
+  item: NavItemData;
+  onClick: () => void;
+};
 
 type NavItemData = {
-    key: string;
-    text: string;
-    icon: React.ReactNode;
-    route: string;
-}
+  key: string;
+  text: string;
+  icon: React.ReactNode;
+  route: string;
+};
 
 const navItems: NavItemData[] = [
-    {key: 'profile', text: 'Profile', icon: <AccountBoxIcon/>, route: '/profile'},
-    {key: 'dashboard', text: 'Dashboard', icon: <DashboardIcon/>, route: '/dashboard'},
+  {
+    key: 'profile',
+    text: 'Profile',
+    icon: <AccountBoxIcon />,
+    route: '/profile',
+  },
+  {
+    key: 'dashboard',
+    text: 'Dashboard',
+    icon: <DashboardIcon />,
+    route: '/dashboard',
+  },
 ];
 
 function NavItem({item, onClick}: NavItemProps) {
-    return (
-        <ListItem key={item.key} disablePadding>
-            <ListItemButton onClick={onClick}>
-                <ListItemIcon>
-                    {item.icon}
-                </ListItemIcon>
-                <ListItemText primary={item.text}/>
-            </ListItemButton>
-        </ListItem>
-    );
+  return (
+    <ListItem key={item.key} disablePadding>
+      <ListItemButton onClick={onClick}>
+        <ListItemIcon>{item.icon}</ListItemIcon>
+        <ListItemText primary={item.text} />
+      </ListItemButton>
+    </ListItem>
+  );
 }
 
-export {Drawer}
+export {Drawer};
