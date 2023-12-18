@@ -4,8 +4,8 @@ import Typography from '@mui/material/Typography';
 
 function GoogleAuthButton() {
   const googleAuthUrl = 'https://accounts.google.com/o/oauth2/v2/auth';
-  const clientId =
-    '904366458688-hrnhaak1c9juadkcqqn5kgl27muos363.apps.googleusercontent.com';
+  const clientId = process.env.NEXT_PUBLIC_CLIENT_ID;
+  const redirectUrl = process.env.NEXT_PUBLIC_REDIRECT_URL;
   const scopes = [
     'https://www.googleapis.com/auth/userinfo.profile',
     'https://www.googleapis.com/auth/userinfo.email',
@@ -18,7 +18,7 @@ function GoogleAuthButton() {
       onClick={() =>
         (window.location.href = `${googleAuthUrl}?client_id=${clientId}&scope=${scopes.join(
           ' '
-        )}&redirect_uri=http://localhost:3000/login/google&response_type=code`)
+        )}&redirect_uri=${redirectUrl}&response_type=code`)
       }
     >
       <GoogleIcon fontSize={'small'} />
