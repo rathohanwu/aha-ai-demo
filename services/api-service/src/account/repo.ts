@@ -1,6 +1,19 @@
 import * as md5 from "md5";
 import {prisma} from "../lib/db";
 
+export function updateAccountActiveTimeByEmails(emails: string[]) {
+    return prisma.account.updateMany({
+        data: {
+            acitveTime: new Date()
+        },
+        where: {
+            email: {
+                in: emails
+            }
+        }
+    })
+}
+
 export function updateAccountPasswordByEmail(email: string, password: string) {
     return prisma.account.update({
         data: {

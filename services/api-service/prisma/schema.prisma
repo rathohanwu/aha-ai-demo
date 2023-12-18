@@ -16,6 +16,7 @@ model Account {
   name         String
   password     String?
   signUpTime   DateTime             @default(now())
+  acitveTime   DateTime             @default(now())
   verifyEmails AccountVerifyEmail[]
   logins       AccountLogin[]
 }

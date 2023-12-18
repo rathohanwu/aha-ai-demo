@@ -3,6 +3,10 @@ import * as authController from "../auth/controller";
 import {throwHttpException} from "../utils/errors";
 import {SignMethod} from "../utils/jwt";
 
+export function updateAccountActiveTimeByEmails(emails: string[]) {
+    return repo.updateAccountActiveTimeByEmails(emails);
+}
+
 export async function updateAccountPasswordByEmail(email: string, oldPassword: string, password: string) {
     const account = await findAccountByEmailAndPassword(email, oldPassword);
     if (!account) {

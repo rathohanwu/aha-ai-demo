@@ -1,8 +1,12 @@
 import * as service from "./service";
 import {SignMethod} from "../utils/jwt";
 
+export async function updateAccountActiveTimeByEmails(emails: string[]) {
+    return service.updateAccountActiveTimeByEmails(emails);
+}
+
 export function updateAccountPasswordByEmail(email: string, oldPassword: string, password: string) {
-    return service.updateAccountPasswordByEmail(email, oldPassword,password);
+    return service.updateAccountPasswordByEmail(email, oldPassword, password);
 }
 
 export async function findAccountByEmailAndPassword(email: string, password: string) {
