@@ -6,9 +6,9 @@
   "private": true,
   "license": "UNLICENSED",
   "scripts": {
-    "build": "prisma generate deploy && nest build",
+    "build": "prisma generate && nest build",
     "start:dev": "nest start --watch",
-    "start:production": "prisma deploy && node dist/main",
+    "start:production": "prisma migrate deploy && node dist/main",
     "lint": "gts lint",
     "fix": "gts fix"
   },
