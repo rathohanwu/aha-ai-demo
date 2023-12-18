@@ -1,10 +1,11 @@
 import {google} from 'googleapis';
 import {throwHttpException} from '../utils/errors';
+import * as process from 'process';
 
 const authClient = new google.auth.OAuth2(
-  '904366458688-hrnhaak1c9juadkcqqn5kgl27muos363.apps.googleusercontent.com',
-  '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',
-  'http://localhost:3000/login/google'
+  process.env.CLIENT_ID,
+  process.env.CLIENT_SECRET,
+  process.env.CLIENT_REDIRECT_URL
 );
 
 export async function getGoogleUserInfo(code: string) {

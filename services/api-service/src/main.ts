@@ -3,6 +3,8 @@ import {AppModule} from './app.module';
 import * as cookieParser from 'cookie-parser';
 import {SwaggerModule, DocumentBuilder} from '@nestjs/swagger';
 import {activeSessionTracker} from './utils/active-session';
+import {prisma} from './lib/db';
+import * as process from 'process';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -15,9 +17,9 @@ async function bootstrap() {
       {
         description: 'Enter the Auth Token',
         name: 'Authorization',
-        bearerFormat: 'Bearer', // I`ve tested not to use this field, but the result was the same
+        bearerFormat: 'Bearer',
         scheme: 'Bearer',
-        type: 'http', // I`ve attempted type: 'apiKey' too
+        type: 'http',
         in: 'Header',
       },
       'access-token'
@@ -28,9 +30,10 @@ async function bootstrap() {
   app.use(activeSessionTracker);
   app.use(cookieParser());
   app.enableCors({
-    origin: ['http://localhost:3000'],
+    origin: [process.env.CLIENT_URL],
     credentials: true,
   });
+  await prisma.$connect();
   await app.listen(3020);
 }
 
