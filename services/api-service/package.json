@@ -8,7 +8,7 @@
   "scripts": {
     "build": "prisma generate deploy && nest build",
     "start:dev": "nest start --watch",
-    "start:prod": "prisma deploy && node dist/main",
+    "start:production": "prisma deploy && node dist/main",
     "lint": "gts lint",
     "fix": "gts fix"
   },
