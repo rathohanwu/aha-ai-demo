@@ -2,8 +2,7 @@ import * as repo from "./repo";
 import {SignMethod} from "../utils/jwt";
 import {throwHttpException} from "../utils/errors";
 import * as accountController from "../account/controller";
-import {findAccountCountByActiveTime} from "./repo";
-
+import * as moment from "moment";
 
 export async function getUsers(email: string, signMethod: SignMethod) {
     const account = await accountController.findAccountAndVerifiedStatus(email, signMethod);
@@ -16,13 +15,22 @@ export async function getUsers(email: string, signMethod: SignMethod) {
 export async function getUserOverview(): Promise<
     {
         totalCount: number,
-        activeTodayCount: number
+        todayActiveCount: number,
+        lastSevenDayActiveCount: number
     }> {
+    const startOfToday = moment().startOf('day').toDate();
+    const endOfToday = moment().endOf('day').toDate();
+    const startOfSevenDayAgo = moment().startOf('day').subtract(7, 'days').toDate();
 
-    const results = await Promise.all([repo.findAccountCount(), repo.findAccountCountByActiveTime()])
+    const results = await Promise.all([
+        repo.findAccountCount(),
+        repo.findAccountCountByActiveTimeRange(startOfToday, endOfToday),
+        repo.findAccountCountByActiveTimeRange(startOfSevenDayAgo, endOfToday),
+    ])
     return {
         totalCount: results[0]._all,
-        activeTodayCount: results[1]
+        todayActiveCount: results[1],
+        lastSevenDayActiveCount: results[2],
     }
 
 }

@@ -1,5 +1,5 @@
 import {prisma} from "../lib/db";
-
+import * as moment from "moment";
 
 export function findAccountAndLoginTimes() {
     return prisma.account.findMany({
@@ -25,8 +25,8 @@ export function findAccountCount() {
     })
 }
 
-export function findAccountCountByActiveTime() {
-    const [startDate, endDate] = getRangeOfDate();
+export function findAccountCountByActiveTimeRange(startDate: Date, endDate: Date) {
+
     return prisma.account.count({
         where: {
             activeTime: {
@@ -35,13 +35,4 @@ export function findAccountCountByActiveTime() {
             }
         }
     })
-}
-
-function getRangeOfDate() {
-    const startDate = new Date();
-    startDate.setHours(0, 0, 0, 0);
-    const endDate = new Date(startDate);
-    endDate.setDate(startDate.getDate() + 1);
-    endDate.setSeconds(endDate.getSeconds() - 1);
-    return [startDate, endDate]
 }
