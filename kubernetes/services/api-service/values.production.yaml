@@ -1,4 +1,2 @@
 namespace: production
 env: production
-repository: registry.digitalocean.com/scytale
-tag: latest

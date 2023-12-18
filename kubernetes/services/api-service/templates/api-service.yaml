@@ -19,7 +19,7 @@ spec:
     spec:
       containers:
         - name: api-service
-          image: {{ .Values.repository }}/api-service:{{ .Values.tag}}
+          image: registry.digitalocean.com/scytale/api-service:latest
           imagePullPolicy: Always
           ports:
             - name: liveness-port
@@ -28,6 +28,9 @@ spec:
             - "npm"
             - "run"
             - "start:{{ .Values.env }}"
+          envFrom:
+            - secretRef:
+                name: secret-config
           env:
             - name: env
               value: {{ .Values.env | quote }}

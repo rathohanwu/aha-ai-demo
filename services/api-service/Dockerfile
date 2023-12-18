@@ -13,4 +13,4 @@ RUN ls /app/services/api-service
 RUN pnpm build
 
 EXPOSE 3020
-CMD ["npm", "start"]
+ENTRYPOINT [ "npm", "start" ]
