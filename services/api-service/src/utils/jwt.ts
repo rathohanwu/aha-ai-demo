@@ -1,6 +1,7 @@
 import * as jwt from 'jsonwebtoken';
 import {createParamDecorator, ExecutionContext} from '@nestjs/common';
 import {throwHttpException} from './errors';
+import * as process from 'process';
 
 export type SignMethod = 'GOOGLE' | 'PASSWORD';
 
@@ -12,7 +13,7 @@ type Account = {
 
 export type JwtToken = Account & {exp: number};
 
-const JWT_SECRET_KEY = 'SECRET';
+const JWT_SECRET_KEY = process.env.JWT_SECRET_KEY;
 export const JWT_TOKEN_NAME = 'JWT_TOKEN';
 
 export function signJwt(account: Account) {
