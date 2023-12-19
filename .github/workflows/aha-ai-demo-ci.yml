@@ -1,0 +1,37 @@
+name: aha-ai-demo-ci
+
+on:
+  push:
+    branches: [ development ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  Push-Repository:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout the repo
+        uses: actions/checkout@v2
+
+      - name: Install doctl
+        uses: digitalocean/action-doctl@v2
+        with:
+          token: ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}
+
+      - name: Log into Digial Ocean Container Registry
+        run: doctl registry login --expiry-seconds 600
+
+      - name: Build, tag, and push image to Digital Ocean Registry
+        env:
+          REGISTRY: registry.digitalocean.com/scytale
+          REPOSITORY: aha-ai-demo
+          IMAGE_TAG: ${{ github.sha }}
+        run: |
+          docker build -t \
+            --build-arg NEXT_PUBLIC_BACKEND_API_URL=${{ env.NEXT_PUBLIC_BACKEND_API_URL }} \
+            --build-arg NEXT_PUBLIC_CLIENT_ID=${{ env.NEXT_PUBLIC_CLIENT_ID }} \
+            --build-arg NEXT_PUBLIC_REDIRECT_URL=${{ env.NEXT_PUBLIC_REDIRECT_URL }} \
+            $REGISTRY/$REPOSITORY-ui:$IMAGE_TAG -f ./clients/$REPOSITORY/Dockerfile .
+          docker push $REGISTRY/$REPOSITORY-ui:$IMAGE_TAG
+          docker tag $REGISTRY/$REPOSITORY-ui:$IMAGE_TAG $REGISTRY/$REPOSITORY-ui:latest
+          docker push $REGISTRY/$REPOSITORY-ui:latest
