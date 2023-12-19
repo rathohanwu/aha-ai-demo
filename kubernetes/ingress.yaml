@@ -29,6 +29,6 @@ spec:
             path: "/"
             backend:
               service:
-                name: scytale
+                name: aha-ai-demo
                 port:
                   number: 3000
