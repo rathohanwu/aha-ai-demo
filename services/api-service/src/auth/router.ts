@@ -28,7 +28,7 @@ export class AuthRouter {
   ) {
     const isVerified = await controller.verifyEmail(verifyEmail.code);
     isVerified
-      ? res.redirect('http://localhost:3000/dashboard')
+      ? res.redirect(`${process.env.CLIENT_URL}/dashboard`)
       : res.send('email verification is wrong');
   }
 

@@ -61,7 +61,7 @@ async function sendVerificationEmail(
   return sendEmail(
     email,
     name,
-    `http://localhost:3020/auth/verify?code=${verifyEmail.code}`
+    `${process.env.API_URL}/auth/verify?code=${verifyEmail.code}`
   );
 }
 

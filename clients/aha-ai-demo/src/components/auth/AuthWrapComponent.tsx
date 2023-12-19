@@ -10,9 +10,8 @@ function AuthWrapComponent<T>(WrappedComponent: React.ComponentType<T>) {
     const isLogin = useLoginStore(state => state.isLogin);
     if (!isLogin) {
       showErrorMessage('user should login first to access to this page');
-      window.location.href = 'http://localhost:3000/';
+      window.location.href = '/';
     }
-
     return <WrappedComponent {...props} />;
   };
 }
