@@ -27,11 +27,11 @@ jobs:
           REPOSITORY: aha-ai-demo
           IMAGE_TAG: ${{ github.sha }}
         run: |
-          docker build -t \
+          docker build \
             --build-arg NEXT_PUBLIC_BACKEND_API_URL=${{ vars.NEXT_PUBLIC_BACKEND_API_URL }} \
             --build-arg NEXT_PUBLIC_CLIENT_ID=${{ vars.NEXT_PUBLIC_CLIENT_ID }} \
             --build-arg NEXT_PUBLIC_REDIRECT_URL=${{ vars.NEXT_PUBLIC_REDIRECT_URL }} \
-            $REGISTRY/$REPOSITORY:$IMAGE_TAG -f ./clients/$REPOSITORY/Dockerfile .
+            -t $REGISTRY/$REPOSITORY:$IMAGE_TAG -f ./clients/$REPOSITORY/Dockerfile .
           docker push $REGISTRY/$REPOSITORY:$IMAGE_TAG
           docker tag $REGISTRY/$REPOSITORY:$IMAGE_TAG $REGISTRY/$REPOSITORY:latest
           docker push $REGISTRY/$REPOSITORY:latest
