@@ -71,6 +71,8 @@ export class AuthRouter {
   private setJwtCookie(response: Response, jwtToken: string) {
     return response.cookie(JWT_TOKEN_NAME, jwtToken, {
       sameSite: 'lax',
+      domain: '.scytale.pro',
+      secure: true,
       // httpOnly: true
     });
   }
