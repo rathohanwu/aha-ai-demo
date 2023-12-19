@@ -28,10 +28,10 @@ jobs:
           IMAGE_TAG: ${{ github.sha }}
         run: |
           docker build -t \
-            --build-arg NEXT_PUBLIC_BACKEND_API_URL=${{ env.NEXT_PUBLIC_BACKEND_API_URL }} \
-            --build-arg NEXT_PUBLIC_CLIENT_ID=${{ env.NEXT_PUBLIC_CLIENT_ID }} \
-            --build-arg NEXT_PUBLIC_REDIRECT_URL=${{ env.NEXT_PUBLIC_REDIRECT_URL }} \
-            $REGISTRY/$REPOSITORY-ui:$IMAGE_TAG -f ./clients/$REPOSITORY/Dockerfile .
-          docker push $REGISTRY/$REPOSITORY-ui:$IMAGE_TAG
-          docker tag $REGISTRY/$REPOSITORY-ui:$IMAGE_TAG $REGISTRY/$REPOSITORY-ui:latest
-          docker push $REGISTRY/$REPOSITORY-ui:latest
+            --build-arg NEXT_PUBLIC_BACKEND_API_URL=${{ vars.NEXT_PUBLIC_BACKEND_API_URL }} \
+            --build-arg NEXT_PUBLIC_CLIENT_ID=${{ vars.NEXT_PUBLIC_CLIENT_ID }} \
+            --build-arg NEXT_PUBLIC_REDIRECT_URL=${{ vars.NEXT_PUBLIC_REDIRECT_URL }} \
+            $REGISTRY/$REPOSITORY:$IMAGE_TAG -f ./clients/$REPOSITORY/Dockerfile .
+          docker push $REGISTRY/$REPOSITORY:$IMAGE_TAG
+          docker tag $REGISTRY/$REPOSITORY:$IMAGE_TAG $REGISTRY/$REPOSITORY:latest
+          docker push $REGISTRY/$REPOSITORY:latest
