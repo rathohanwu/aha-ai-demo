@@ -6,7 +6,7 @@ metadata:
   labels:
     app: aha-ai-demo
 spec:
-  replicas: 1
+  replicas: 2
   selector:
     matchLabels:
       app: aha-ai-demo
@@ -17,6 +17,16 @@ spec:
       labels:
         app: aha-ai-demo
     spec:
+      affinity:
+        podAntiAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            - labelSelector:
+                matchExpressions:
+                  - key: app
+                    operator: In
+                    values:
+                      - aha-ai-demo
+              topologyKey: "kubernetes.io/hostname"
       containers:
         - name: aha-ai-demo
           image: registry.digitalocean.com/scytale/aha-ai-demo:latest
@@ -27,21 +37,20 @@ spec:
           command:
             - "pnpm"
             - "start"
-#          livenessProbe:
-#            httpGet:
-#              path: /
-#              port: liveness-port
-#            initialDelaySeconds: 30
-#            periodSeconds: 10
-#            timeoutSeconds: 10
-#          readinessProbe:
-#            httpGet:
-#              path: /
-#              port: liveness-port
-#            initialDelaySeconds: 30
-#            periodSeconds: 10
-#            timeoutSeconds: 10
-
+          livenessProbe:
+            httpGet:
+              path: /
+              port: liveness-port
+            initialDelaySeconds: 30
+            periodSeconds: 10
+            timeoutSeconds: 10
+          readinessProbe:
+            httpGet:
+              path: /
+              port: liveness-port
+            initialDelaySeconds: 30
+            periodSeconds: 10
+            timeoutSeconds: 10
 ---
 apiVersion: v1
 kind: Service
