@@ -71,21 +71,19 @@ export class AuthRouter {
 
   @Get('logout')
   logout(@Res({passthrough: true}) response: Response) {
-    response.clearCookie(JWT_TOKEN_NAME, {
-      sameSite: 'lax',
-      domain: process.env.NODE_ENV === 'local' ? undefined : '.scytale.pro',
-      secure: true,
-    });
+    response.clearCookie(JWT_TOKEN_NAME, jwtCookieConfig);
     return 'Log Out';
   }
 
   private setJwtCookie(response: Response, jwtToken: string) {
     return response
-      .cookie(JWT_TOKEN_NAME, jwtToken, {
-        sameSite: 'lax',
-        domain: process.env.NODE_ENV === 'local' ? undefined : '.scytale.pro',
-        secure: true,
-      })
+      .cookie(JWT_TOKEN_NAME, jwtToken, jwtCookieConfig)
       .send({message: 'Get the JWT Token '});
   }
 }
+
+const jwtCookieConfig = {
+  sameSite: 'lax' as const,
+  domain: process.env.NODE_ENV === 'local' ? undefined : '.scytale.pro',
+  secure: true,
+};
