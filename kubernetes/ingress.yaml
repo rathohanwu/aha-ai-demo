@@ -9,7 +9,7 @@ spec:
   tls:
     - hosts:
         - api.scytale.pro
-        - www.scytale.pro
+        - aha.scytale.pro
       secretName: scytale-tls
   rules:
     - host: "api.scytale.pro"
@@ -22,7 +22,7 @@ spec:
                 name: api-service
                 port:
                   number: 3020
-    - host: "www.scytale.pro"
+    - host: "aha.scytale.pro"
       http:
         paths:
           - pathType: Prefix

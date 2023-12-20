@@ -68,6 +68,15 @@ export class AuthRouter {
     return controller.resendVerifyEmail(jwtToken.email, jwtToken.signMethod);
   }
 
+  @Get('logout')
+  logout(@Res({passthrough: true}) response: Response) {
+    return response.clearCookie(JWT_TOKEN_NAME, {
+      sameSite: 'lax',
+      domain: '.scytale.pro',
+      secure: true,
+    });
+  }
+
   private setJwtCookie(response: Response, jwtToken: string) {
     return response.cookie(JWT_TOKEN_NAME, jwtToken, {
       sameSite: 'lax',
