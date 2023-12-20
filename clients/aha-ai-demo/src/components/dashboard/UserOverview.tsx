@@ -1,4 +1,4 @@
-import {Grid, Paper} from '@mui/material';
+import {Grid, LinearProgress, Paper} from '@mui/material';
 import {useUsersOverview} from '@/hooks/dashboard/useUsersOverview';
 import Typography from '@mui/material/Typography';
 
@@ -13,8 +13,9 @@ function StatisticCard(props: {title: string; content?: string}) {
 }
 
 function UserOverview() {
-  const {overview} = useUsersOverview();
+  const {overview, isLoading} = useUsersOverview();
 
+  if (isLoading) return <LinearProgress />;
   return (
     <div>
       <Grid container spacing={2}>
