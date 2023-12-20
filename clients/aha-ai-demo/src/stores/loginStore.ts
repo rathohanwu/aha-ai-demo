@@ -10,16 +10,18 @@ interface LoginState {
   logout: () => void;
 }
 
-const useLoginStore = create<LoginState>((set, get) => ({
-  isLogin: true,
-  refresh: () => {
-    set({isLogin: !!cookie.get(JWT_TOKEN_NAME)});
-  },
-  logout: () => {
-    api.get('/auth/logout');
-    window.location.href = '/';
-    get().refresh();
-  },
-}));
+const useLoginStore = create<LoginState>((set, get) => {
+  return {
+    isLogin: true,
+    refresh: () => {
+      set({isLogin: !!cookie.get(JWT_TOKEN_NAME)});
+    },
+    logout: async () => {
+      await api.get('/auth/logout');
+      window.location.href = '/';
+      get().refresh();
+    },
+  };
+});
 
 export {useLoginStore};
