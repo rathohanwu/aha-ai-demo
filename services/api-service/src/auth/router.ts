@@ -70,11 +70,13 @@ export class AuthRouter {
 
   @Get('logout')
   logout(@Res({passthrough: true}) response: Response) {
-    return response.clearCookie(JWT_TOKEN_NAME, {
-      sameSite: 'lax',
-      domain: '.scytale.pro',
-      secure: true,
-    });
+    return response
+      .clearCookie(JWT_TOKEN_NAME, {
+        sameSite: 'lax',
+        domain: '.scytale.pro',
+        secure: true,
+      })
+      .send({status: 'logout'});
   }
 
   private setJwtCookie(response: Response, jwtToken: string) {
