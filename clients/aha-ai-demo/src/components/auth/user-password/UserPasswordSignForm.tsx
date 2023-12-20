@@ -114,7 +114,7 @@ const signUpSchema = yup
 
 const signInSchema = yup.object({
   email: emailValidation,
-  password: passwordValidation,
+  password: yup.string().required('Password is required'),
 });
 
 export {UserPasswordSignForm};
