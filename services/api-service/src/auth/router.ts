@@ -16,6 +16,7 @@ import {Response} from 'express';
 
 import {JWT_TOKEN_NAME, JwtToken, UseJwtToken} from '../utils/jwt';
 import {ApiBearerAuth, ApiTags} from '@nestjs/swagger';
+import * as process from 'process';
 
 @ApiTags('Auth')
 @Router('auth')
@@ -70,21 +71,21 @@ export class AuthRouter {
 
   @Get('logout')
   logout(@Res({passthrough: true}) response: Response) {
-    return response
-      .clearCookie(JWT_TOKEN_NAME, {
-        sameSite: 'lax',
-        domain: '.scytale.pro',
-        secure: true,
-      })
-      .send({status: 'logout'});
+    response.clearCookie(JWT_TOKEN_NAME, {
+      sameSite: 'lax',
+      domain: process.env.NODE_ENV === 'local' ? undefined : '.scytale.pro',
+      secure: true,
+    });
+    return 'Log Out';
   }
 
   private setJwtCookie(response: Response, jwtToken: string) {
-    return response.cookie(JWT_TOKEN_NAME, jwtToken, {
-      sameSite: 'lax',
-      domain: '.scytale.pro',
-      secure: true,
-      // httpOnly: true
-    });
+    return response
+      .cookie(JWT_TOKEN_NAME, jwtToken, {
+        sameSite: 'lax',
+        domain: process.env.NODE_ENV === 'local' ? undefined : '.scytale.pro',
+        secure: true,
+      })
+      .send({message: 'Get the JWT Token '});
   }
 }
