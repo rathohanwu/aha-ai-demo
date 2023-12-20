@@ -6,7 +6,7 @@ metadata:
   labels:
     app: api-service
 spec:
-  replicas: 1
+  replicas: 2
   selector:
     matchLabels:
       app: api-service
@@ -17,6 +17,16 @@ spec:
       labels:
         app: api-service
     spec:
+      affinity:
+        podAntiAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            - labelSelector:
+                matchExpressions:
+                  - key: app
+                    operator: In
+                    values:
+                      - api-service
+              topologyKey: "kubernetes.io/hostname"
       containers:
         - name: api-service
           image: registry.digitalocean.com/scytale/api-service:latest
