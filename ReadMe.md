@@ -1,69 +1,86 @@
-# AHA AI Exam Demo.
+# AHA AI Demo
 
 ## Overview
 
-This is a monorepo base on pnpm. As you can see, the backend and frontend are split into different folder.
-In each folder, code are split into folder according to their usage. For an example, the only service at this moment is
-api-service which handle all the account and auth request.
-If going forward this project grow really fast and big, we might need to further split the api-service into auth-service
-and account-service.
-Moreover, if both auth and account service depends on email related api, we might extract email-service as technical
-component for other services.
-same concept for the clients folder, it is designed to accomodate more client device like ios and android.
+This project is to
+implement [candidate exam](https://rootdomain.notion.site/Candidate-Exam-Back-End-Full-Stack-Engineer-bc9e910d3c0f477287cda3ad874ee572).
+This documentation would cover all the design notion and as much as detail possible.
 
-## Component and Framework
+## Table of Contents
 
-I would like to split this section into three sub part, project management tool, frontend, and backend
+- [Overview](#overview)
+- [Infrastructure & Third Party API](#infrastructure--third-party-api)
+- [Project Structure](#project-structure)
+- [Components](#components)
+    - [API Service](#api-service)
+        - [Folder Structure](#folder-structure)
+        - [Framework and Usage](#framework-and-usage)
+        - [How Data Flow?](#how-data-flow)
+    - [How to Run Locally](#how-to-run-locally)
 
-### Project Management Tool
+## Infrastructure & Third Party API
 
-This is a mono repo based on pnpm. pnpm is a pretty good tool for manage big repo especially depedency installation for
-its child project.
-The basic ususage is to create a pnpm-workspace.yaml to specify child component and then these component is under pnpm
-management.
-You could run the code below to install pnpm and install all the dependency among the root folder
-* ```npm -g pnpm``` & ```pnpm install``` in the root folder.
-* Installing new dependency, go to the folder like services/api-service
-```cd services/api-service``` and run ```pnpm add depedency``` then pnpm will take control how the dependency should be
-installed.
+* Cloud Flare: the domain and dns provider where I bought a domain (scytale.pro) for my previous project and re-used it
+  for aha ai demo (aha.scytale.pro)
+* Digital Ocean: the cloud service provider where I run the postgres and kubernetes.
+* Kubernetes + Helm: the application is deployed into kubernetes cluster for pod & service creation, upgrade, and other
+  management. Services are exposed by using ingress with routing rule for frontend and backend.
+* Google Auth: OAuth Provider
+* Mail Sender: Email sending service Provider
 
-### Front End
+## Project Structure
 
-Front End code is under clients folder and selected frameworks are:-
+This is a mono repo managed by [pnpm](https://pnpm.io/) and the folder is structured in micro service way.
+By looking at the project, the root folder have clients and services folder which are frontend and backend respectively.
+Inside the services folder, instead of putting code into services folder directly, I put it into api-service folder.
+This can be benefit from further split going forward.
+For example, api service provide auth and account related business. if the throughput of application is growing, and
+there are more users request to account data. By using this structure, account related business could be structured as a
+independent service to achieve single responsibility design.
+Considering another scenario if account and auth service both require email functionality, then mail service can be
+further separated from api service. And the outcome is account,api, and mail service under services folder.
+Clients also conform this design when more device is required i.e. ios, android, react-native, and website.
+By Structuring folder this way, it might cost some time in the beginning of project, especially when define which domain
+should be separated and which business belong to which domain. But this structure provide more return in long term when
+business grow big and fast.
 
-* Next.js and SWR as backbone for page routing, rendering, and api calling
-* Material UI and Material UI Chart as UI Component
-* Zustand as statement for tracking user sign-in status
+## Components
 
-Folder structure and explanation:-
-the design notion is to split folder based on their domain so that every component
-i.e. React.Component, hooks, or lib can be clearly founded and self-explained
+### API Service
 
-* components: this is where all the UI component should be placed and further split by domain i.e. components/account and component/auth. I hope designing in this way can help developer locate the component faster.
-* hook: including all the hook i.e. swr, or self wrapped hook for useState
-* 
+#### Folder Structure
 
-hooks: include all the hook i.e. wrapper useState hook for managment modal open close operation, or api request hook
-wrapper swr.
+the api service structure folder into three category domain, lib, and utils.
 
-pages: router structure according to Next.JS
-stores: defining all the state required in this project.
-utils:
+* domain: domain is split into account, auth, and dashboard according to their business belonging.
+* lib: lib contains every third party api required by this project including database connection, mail api, and google
+  auth.
+* utils: a utility support domain and lib.
 
-### BackEnd
+#### Framework and Usage
 
-I choose Nest.JS for facilitating request validation and field parsing and prisma as a repo and database tool.
-under the source, the code is structured as business domain so that account and auth are splited into differnet folder
-to make sure there is no big class big responsibiltiy in each domain. for domain related folder,
-the request flow as Router + Schema -> Controller -> Service -> Repo
-Router + Schema is the first layer for handing request,
-in this layer, Router + Schema validate if request has required field/format then pass that to the controller
-In controller layer, it is just a facet to receieve router + service calling then redirect the function call
-to service layer, service is where business logic is defined, if auth service need account data,
-it will retreieve it by calling account controller, final layer is repo where do the database interaction.
+the api service is constructed by Nest.js and Prisma
 
-For Dashboard, given it is a reporting based domain, so that there is no restriction for it to
-interact with account and auth data directly (usually we will create a dashboard specific doamin/database/table through
-the ETL)
+* [Nest.js](https://nestjs.com/): a framework built on express. I use it as a request routing & validating,
+  parameter parser, swagger documentation generator.
+* [Prisma](https://www.prisma.io/): a ORM framework for Node.js. I use it as a database migration tool and orm for
+  querying database.
 
+#### How Data Flow?
+
+taking account for example, for evey account api request, the data flow is Router + Schema -> Controller -> Service ->
+Repo.
+
+* Router + Schema: the first layer receive request, validate request, and filter invalid request
+* Controller: dispatch the request from router and method call from other service to service layer
+* Service: business logic handler
+* Repo: database interaction for querying & updating
+
+##### Router and Controller
+
+Router is designed to be faceted for api endpoint. its purpose is to open api end point to outsider.
+controller is the intermediate layer for:
+
+1. router for its own domain.
+2. other service like auth service need account data for some of its operation.
 
