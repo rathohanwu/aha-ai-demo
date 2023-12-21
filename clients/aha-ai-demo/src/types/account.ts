@@ -4,6 +4,7 @@ type Account = {
   signUpTime: string;
   activeTime: string;
   verified: boolean;
+  signMethod: 'GOOGLE' | 'PASSWORD';
   _count: {
     logins: number;
   };

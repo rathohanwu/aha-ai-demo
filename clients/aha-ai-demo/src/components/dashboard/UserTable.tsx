@@ -6,12 +6,14 @@ import {
   TableHead,
   TableCell,
   TableBody,
+  LinearProgress,
 } from '@mui/material';
 import {formatDate} from '@/utils/date';
 import {useUsers} from '@/hooks/dashboard/useUsers';
 
 function UserTable() {
-  const {users} = useUsers();
+  const {users, isLoading} = useUsers();
+  if (isLoading) return <LinearProgress />;
 
   return (
     <div>

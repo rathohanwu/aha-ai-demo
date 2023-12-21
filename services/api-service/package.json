@@ -7,7 +7,7 @@
   "license": "UNLICENSED",
   "scripts": {
     "build": "prisma generate && nest build",
-    "start:dev": "nest start --watch",
+    "start:dev": "NODE_ENV=local nest start --watch",
     "start:production": "prisma migrate deploy && node dist/main",
     "lint": "gts lint",
     "fix": "gts fix"
