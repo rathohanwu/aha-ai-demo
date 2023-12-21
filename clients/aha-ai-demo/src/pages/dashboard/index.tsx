@@ -56,6 +56,15 @@ function Dashboard() {
         </div>
       </div>
 
+      {!account?.verified && (
+        <div>
+          <Typography>The email verification is required</Typography>
+          <Typography>
+            If you haven't received the email, click on the resend email button
+          </Typography>
+        </div>
+      )}
+
       {account?.verified && (
         <div
           style={{
