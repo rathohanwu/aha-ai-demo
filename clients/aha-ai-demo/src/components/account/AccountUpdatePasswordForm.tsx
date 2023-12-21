@@ -10,7 +10,7 @@ import {
   showLoadingMessage,
   showSuccessfulMessage,
 } from '@/utils/toast';
-import {passwordValidation} from '@/utils/validation';
+import {passwordConfirmation, passwordValidation} from '@/utils/validation';
 import {HttpError} from '@/types/http';
 
 type Props = {
@@ -103,10 +103,7 @@ const schema = yup
   .object({
     oldPassword: yup.string().required('Old password is required'),
     newPassword: passwordValidation,
-    passwordConfirmation: yup
-      .string()
-      .required()
-      .oneOf([yup.ref('newPassword')], 'Passwords must match'),
+    passwordConfirmation: passwordConfirmation('newPassword'),
   })
   .required();
 

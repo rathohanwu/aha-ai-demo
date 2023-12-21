@@ -11,6 +11,7 @@ import {showAPIErrorMessage} from '@/utils/toast';
 import {
   emailValidation,
   nameValidation,
+  passwordConfirmation,
   passwordValidation,
 } from '@/utils/validation';
 import {HttpError} from '@/types/http';
@@ -19,6 +20,7 @@ type Inputs = {
   email: string;
   password: string;
   name?: string;
+  passwordConfirmation?: string;
 };
 
 type Props = {
@@ -90,6 +92,17 @@ function UserPasswordSignForm(props: Props) {
             error={!!errors.password}
             helperText={errors.password?.message}
           />
+
+          <TextField
+            fullWidth
+            label="Password Confirmation"
+            type="password"
+            size="small"
+            {...register('passwordConfirmation')}
+            error={!!errors.passwordConfirmation}
+            helperText={errors.passwordConfirmation?.message}
+          />
+
           <div style={{display: 'flex', justifyContent: 'right', gap: 10}}>
             <Button variant="outlined" onClick={close}>
               Cancel
@@ -109,6 +122,7 @@ const signUpSchema = yup
     email: emailValidation,
     name: nameValidation,
     password: passwordValidation,
+    passwordConfirmation: passwordConfirmation('password'),
   })
   .required();
 
