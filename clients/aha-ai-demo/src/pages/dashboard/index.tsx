@@ -44,17 +44,27 @@ function Dashboard() {
             gap: 10,
           }}
         >
-          {account?.verified ? (
+          {account?.verified && account?.signMethod === 'PASSWORD' && (
             <Button variant={'contained'} onClick={accountModal.open}>
               Reset Password
             </Button>
-          ) : (
+          )}
+          {!account?.verified && (
             <Button variant={'outlined'} onClick={resendEmail}>
               Resend Email
             </Button>
           )}
         </div>
       </div>
+
+      {!account?.verified && (
+        <div>
+          <Typography>The email verification is required</Typography>
+          <Typography>
+            If you haven't received the email, click on the resend email button
+          </Typography>
+        </div>
+      )}
 
       {account?.verified && (
         <div
