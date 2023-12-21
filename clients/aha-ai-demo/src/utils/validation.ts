@@ -10,8 +10,19 @@ const passwordValidation = yup
   .min(8, 'Password should be at least 8 characters')
   .max(20, 'Password cannot exceed more than 20 characters');
 
+const passwordConfirmation = (field: string) =>
+  yup
+    .string()
+    .required()
+    .oneOf([yup.ref(field)], 'Passwords must match');
+
 const emailValidation = yup.string().required('Email is required').email();
 
 const nameValidation = yup.string().required('Name is required');
 
-export {passwordValidation, emailValidation, nameValidation};
+export {
+  passwordValidation,
+  passwordConfirmation,
+  emailValidation,
+  nameValidation,
+};
