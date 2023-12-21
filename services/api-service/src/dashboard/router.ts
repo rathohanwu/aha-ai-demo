@@ -1,22 +1,22 @@
 import {Router} from 'src/utils/http';
-import {Get} from '@nestjs/common';
-
+import {Get, UseInterceptors} from '@nestjs/common';
 import * as controller from './controller';
-import {JwtToken, UseJwtToken} from '../utils/jwt';
 import {ApiBearerAuth, ApiTags} from '@nestjs/swagger';
+import {DashboardInterceptor} from './interceptor';
 
 @ApiTags('Dashboard')
+@UseInterceptors(new DashboardInterceptor())
 @Router('dashboard')
 export class DashBoardRouter {
   @Get('users')
   @ApiBearerAuth('access-token')
-  async getUsers(@UseJwtToken() jwtToken: JwtToken) {
-    return controller.getUsers(jwtToken.email, jwtToken.signMethod);
+  async getUsers() {
+    return controller.getUsers();
   }
 
   @Get('users/overview')
   @ApiBearerAuth('access-token')
-  async getUserOverview(@UseJwtToken() jwtToken: JwtToken) {
+  async getUserOverview() {
     return controller.getUserOverview();
   }
 }

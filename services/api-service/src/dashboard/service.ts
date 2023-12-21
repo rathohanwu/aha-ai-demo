@@ -1,17 +1,7 @@
 import * as repo from './repo';
-import {SignMethod} from '../utils/jwt';
-import {throwHttpException} from '../utils/errors';
-import * as accountController from '../account/controller';
 import * as moment from 'moment';
 
-export async function getUsers(email: string, signMethod: SignMethod) {
-  const account = await accountController.findAccountAndVerifiedStatus(
-    email,
-    signMethod
-  );
-  if (!account.verified) {
-    throwHttpException("the account hasn't been verified");
-  }
+export async function getUsers() {
   return repo.findAccountAndLoginTimes();
 }
 
