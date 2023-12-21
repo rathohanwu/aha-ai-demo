@@ -44,11 +44,12 @@ function Dashboard() {
             gap: 10,
           }}
         >
-          {account?.verified ? (
+          {account?.verified && account?.signMethod === 'PASSWORD' && (
             <Button variant={'contained'} onClick={accountModal.open}>
               Reset Password
             </Button>
-          ) : (
+          )}
+          {!account?.verified && (
             <Button variant={'outlined'} onClick={resendEmail}>
               Resend Email
             </Button>

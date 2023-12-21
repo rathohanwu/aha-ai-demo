@@ -44,6 +44,7 @@ export async function findAccountAndVerifiedStatus(
   email: string;
   signUpTime: Date;
   verified: boolean;
+  signMethod: SignMethod;
 }> {
   const account = await repo.findAccountByEmail(email);
 
@@ -63,5 +64,6 @@ export async function findAccountAndVerifiedStatus(
     email: accountEmail,
     signUpTime,
     verified: isGoogle || !!verifyEmail,
+    signMethod,
   };
 }
