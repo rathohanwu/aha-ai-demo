@@ -24,6 +24,8 @@ This documentation would cover all the design notion and as much as detail possi
     - [Prerequisites](#prerequisites)
     - [API Service Setup](#api-service-setup)
     - [AHA AI Demo - Client Setup](#aha-ai-demo---client-setup)
+- [How To Play with the Live Environment](#how-to-play-with-the-live-environment)
+- [ How To Test the Backend Service](#how-to-test-the-backend-service)
 
 ## Infrastructure & Third Party API
 
@@ -203,3 +205,53 @@ To set up the AHA AI Demo client:
 
 - Run `pnpm dev` to start the AHA AI Demo client in development mode.
 - open browser and navigate to ```http://localhost:3000``` to play with it.
+
+## How To Play with the Live Environment
+
+Follow these steps to interact with the live environment of the AHA AI Demo:
+
+1. **Access the Website**: Visit [AHA AI Demo](https://aha.scytale.pro).
+
+2. **Sign In or Sign Up**:
+
+- Click on the 'Sign In' or 'Sign Up' button on the navigation bar.
+- You can sign in/up using Google or with an email and password.
+
+3. **Dashboard Access**:
+
+- Users signing in/up via Google will be directed to the dashboard.
+- Users signing in/up via email will be directed to the dashboard with a prompt to verify their email address. You can
+  resend the verification email if necessary.
+
+4. **Profile Management**:
+
+- Navigate to your profile to change your name by clicking on the menu in the upper right corner and selecting '
+  Profile'.
+
+5. **Email Verification**:
+
+- For email-based sign-ups, after clicking the verification link:
+    - If verification is successful, you will be redirected to the dashboard.
+    - If unsuccessful, an error message will be displayed.
+
+## How To Test the Backend Service
+
+To test the API endpoints of the backend service:
+
+1. **Obtain JWT Token**:
+
+- Log in to the [AHA AI Demo website](https://aha.scytale.pro).
+- Open the Chrome Developer Tools -> Application -> Cookies, and copy the JWT token.
+
+2. **Access Swagger Documentation**:
+
+- Visit the [Swagger documentation](https://api.scytale.pro/doc).
+
+3. **Authorize in Swagger**:
+
+- Click on the "Authorize" button located at the top right of the page.
+- Paste the copied JWT token into the appropriate field and click "Authorize".
+
+4. **API Testing**:
+
+- With authorization set, you can now test the various API endpoints using the Swagger UI.
