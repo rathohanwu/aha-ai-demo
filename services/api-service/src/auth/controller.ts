@@ -6,8 +6,14 @@ export function resendVerifyEmail(email: string, signMethod: SignMethod) {
   return service.resendVerifyEmail(email, signMethod);
 }
 
-export async function findAccountVerifyEmailByAccountId(accountId: number) {
-  return service.findAccountVerifyEmailByAccountId(accountId);
+export async function findAccountVerifyEmailByAccountIdAndStatus(
+  accountId: number,
+  verified: boolean
+) {
+  return service.findAccountVerifyEmailByAccountIdAndStatus(
+    accountId,
+    verified
+  );
 }
 
 export function signUp(signUp: SignUpUserPasswordDTO) {

@@ -17,8 +17,11 @@ export async function resendVerifyEmail(email: string, signMethod: SignMethod) {
   return sendVerificationEmail(account.email, account.name, account.id);
 }
 
-export function findAccountVerifyEmailByAccountId(accountId: number) {
-  return repo.findAccountVerifyEmailByAccountId(accountId);
+export function findAccountVerifyEmailByAccountIdAndStatus(
+  accountId: number,
+  verified: boolean
+) {
+  return repo.findAccountVerifyEmailByAccountIdAndStatus(accountId, verified);
 }
 
 export async function signGoogle(code: string) {
@@ -57,7 +60,15 @@ async function sendVerificationEmail(
   name: string,
   accountId: number
 ) {
-  const verifyEmail = await repo.createAccountVerifyEmail(accountId);
+  let verifyEmail = await repo.findAccountVerifyEmailByAccountIdAndStatus(
+    accountId,
+    false
+  );
+
+  if (!verifyEmail) {
+    verifyEmail = await repo.createAccountVerifyEmail(accountId);
+  }
+
   return sendEmail(
     email,
     name,

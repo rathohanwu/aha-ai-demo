@@ -1,11 +1,14 @@
 import {prisma} from '../lib/db';
 import {getRandomCode} from '../utils/random-code';
 
-export async function findAccountVerifyEmailByAccountId(accountId: number) {
+export async function findAccountVerifyEmailByAccountIdAndStatus(
+  accountId: number,
+  verified: boolean
+) {
   return prisma.accountVerifyEmail.findFirst({
     where: {
       accountId: accountId,
-      verified: true,
+      verified: verified,
     },
   });
 }

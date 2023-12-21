@@ -92,16 +92,17 @@ function UserPasswordSignForm(props: Props) {
             error={!!errors.password}
             helperText={errors.password?.message}
           />
-
-          <TextField
-            fullWidth
-            label="Password Confirmation"
-            type="password"
-            size="small"
-            {...register('passwordConfirmation')}
-            error={!!errors.passwordConfirmation}
-            helperText={errors.passwordConfirmation?.message}
-          />
+          {mode === 'signUp' && (
+            <TextField
+              fullWidth
+              label="Password Confirmation"
+              type="password"
+              size="small"
+              {...register('passwordConfirmation')}
+              error={!!errors.passwordConfirmation}
+              helperText={errors.passwordConfirmation?.message}
+            />
+          )}
 
           <div style={{display: 'flex', justifyContent: 'right', gap: 10}}>
             <Button variant="outlined" onClick={close}>

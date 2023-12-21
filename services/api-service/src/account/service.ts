@@ -54,9 +54,8 @@ export async function findAccountAndVerifiedStatus(
 
   const {name, signUpTime, id, email: accountEmail} = account;
   const isGoogle = signMethod === 'GOOGLE';
-  const verifyEmail = await authController.findAccountVerifyEmailByAccountId(
-    id
-  );
+  const verifyEmail =
+    await authController.findAccountVerifyEmailByAccountIdAndStatus(id, true);
 
   return {
     id,
