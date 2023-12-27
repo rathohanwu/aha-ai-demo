@@ -27,13 +27,13 @@ function UserOverview() {
         </Grid>
         <Grid item xs={4}>
           <StatisticCard
-            title={"Total Number of Today's Active Users"}
+            title={"Total Number of Today's Active Users (UTC)"}
             content={`${overview?.todayActiveCount}`}
           />
         </Grid>
         <Grid item xs={4}>
           <StatisticCard
-            title={'Last Seven Day Average of Active Users'}
+            title={'Last Seven Day Average of Active Users (UTC)'}
             content={`${overview?.lastSevenDayActiveCount.toFixed(2)}`}
           />
         </Grid>
